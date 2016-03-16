@@ -1,9 +1,9 @@
 package services
 
 import (
-	"e2ee/api/parameters"
-	"e2ee/core/authentication"
-	"e2ee/core/db"
+	"github.com/mancabizjak/e2ee-server/api/parameters"
+	"github.com/mancabizjak/e2ee-server/core/authentication"
+	"github.com/mancabizjak/e2ee-server/core/db"
 	"encoding/json"
 	jwt "github.com/dgrijalva/jwt-go"
 	"net/http"

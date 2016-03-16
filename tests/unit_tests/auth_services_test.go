@@ -1,10 +1,10 @@
 package unit_tests
 
 import (
-	"e2ee/services"
-	"e2ee/settings"
-	"e2ee/core/authentication"
-	"e2ee/core/db"
+	"../../services"
+	"../../settings"
+	"../../core/authentication"
+	"../../core/db"
 	"github.com/pborman/uuid"
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/stretchr/testify/assert"

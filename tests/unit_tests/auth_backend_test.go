@@ -1,10 +1,10 @@
 package unit_tests
 
 import (
-	"e2ee/core/authentication"
-	"e2ee/core/redis"
-	"e2ee/settings"
-	"e2ee/core/db"
+	"github.com/mancabizjak/e2ee-server/core/authentication"
+	"github.com/mancabizjak/e2ee-server/core/redis"
+	"github.com/mancabizjak/e2ee-server/settings"
+	"github.com/mancabizjak/e2ee-server/core/db"
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/pborman/uuid"
 	"golang.org/x/crypto/bcrypt"
