@@ -5,7 +5,7 @@ import (
 	"e2ee/settings"
 	"e2ee/core/authentication"
 	"e2ee/core/db"
-	"code.google.com/p/go-uuid/uuid"
+	"github.com/pborman/uuid"
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/stretchr/testify/assert"
 	"net/http"

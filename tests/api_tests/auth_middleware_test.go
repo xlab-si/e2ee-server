@@ -11,7 +11,7 @@ import (
 	. "gopkg.in/check.v1"
 	"net/http"
 	"net/http/httptest"
-	"code.google.com/p/go-uuid/uuid"
+	"github.com/pborman/uuid"
 	"os"
 	"testing"
 )

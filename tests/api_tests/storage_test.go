@@ -15,7 +15,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"encoding/json"
-	"code.google.com/p/go-uuid/uuid"
+	"github.com/pborman/uuid"
 	"os"
 	"bytes"
 	"golang.org/x/crypto/bcrypt"

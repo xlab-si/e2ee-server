@@ -6,7 +6,7 @@ import (
 	"e2ee/settings"
 	"e2ee/core/db"
 	jwt "github.com/dgrijalva/jwt-go"
-	"code.google.com/p/go-uuid/uuid"
+	"github.com/pborman/uuid"
 	"golang.org/x/crypto/bcrypt"
 	"github.com/stretchr/testify/assert"
 	. "gopkg.in/check.v1"
