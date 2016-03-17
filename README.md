@@ -27,7 +27,7 @@ Redis is used for storing expired tokens, the password needs to be changed and s
 
 #### Postgresql
 Install PostgreSQL and create database e2ee:
-`CREATE DATABASE e2ee;`. Depending on what OS distribution you are running, you might also have to run `ALTER USER postgres PASSWORD 'postgres'`. For details, see db/db.go
+`CREATE DATABASE e2ee;`. Depending on what OS distribution you are running, you might also have to run `ALTER USER postgres PASSWORD 'postgres';`. For details, see db/db.go
 
 ### 2.) Configure key, certificate and paths
 Every environment (testing, preproduction, production) can be configured via appropriate .json configuration files residing in the settings/ folder. By default, server certificate and key are stored in the keys/ subfolder. You should generate new certificate and key for your server and update .json files to point to the locations where certificate and key are stored.
