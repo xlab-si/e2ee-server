@@ -44,7 +44,7 @@ $ export PATH=$PATH:$GOPATH/bin
 and you will be able to run E2EE server from arbitrary location with `./e2ee-server`.
 
 #### Running tests
-Before starting E2EE server, you it is advisable to run tests to check whether everything is working properly. Navigate to the tests/ directory and from both subdirectories (api_tests/ and unit_tests/) run
+Before starting E2EE server, it is advisable to run tests to check whether everything is working properly. Navigate to the tests/ directory and from both subdirectories (api_tests/ and unit_tests/) run
 ```sh
 $ go test
 ```
