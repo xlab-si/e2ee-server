@@ -1,10 +1,10 @@
 package unit_tests
 
 import (
-	"../../services"
-	"../../settings"
-	"../../core/authentication"
-	"../../core/db"
+	"github.com/xlab-si/e2ee-server/services"
+	"github.com/xlab-si/e2ee-server/settings"
+	"github.com/xlab-si/e2ee-server/core/authentication"
+	"github.com/xlab-si/e2ee-server/core/db"
 	"github.com/pborman/uuid"
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/stretchr/testify/assert"

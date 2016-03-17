@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/mancabizjak/e2ee-server/routers"
-	"github.com/mancabizjak/e2ee-server/settings"
-	"github.com/mancabizjak/e2ee-server/core/db"
+	"github.com/xlab-si/e2ee-server/routers"
+	"github.com/xlab-si/e2ee-server/settings"
+	"github.com/xlab-si/e2ee-server/core/db"
 	"github.com/codegangsta/negroni"
 	"github.com/rs/cors"
 	"net/http"

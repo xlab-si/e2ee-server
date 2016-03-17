@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"github.com/mancabizjak/e2ee-server/core/db"
+	"github.com/xlab-si/e2ee-server/core/db"
 	"encoding/json"
 	"io"
 	"io/ioutil"
