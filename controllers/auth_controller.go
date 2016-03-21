@@ -1,8 +1,8 @@
 package controllers
 
 import (
-	"e2ee/services"
-	"e2ee/core/db"
+	"github.com/xlab-si/e2ee-server/services"
+	"github.com/xlab-si/e2ee-server/core/db"
 	"encoding/json"
 	"net/http"
 	"io"

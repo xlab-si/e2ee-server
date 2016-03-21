@@ -8,9 +8,9 @@ import (
 )
 
 var environments = map[string]string{
-	"production":    "/home/miha/goworkspace/src/e2ee/settings/prod.json",
-	"preproduction": "/home/miha/goworkspace/src/e2ee/settings/pre.json",
-	"tests":         "/home/miha/goworkspace/src/e2ee/settings/tests.json",
+	"production":    "prod.json",
+	"preproduction": "pre.json",
+	"tests":         "tests.json",
 }
 
 type Settings struct {
@@ -32,7 +32,12 @@ func Init() {
 }
 
 func LoadSettingsByEnv(env string) {
-	content, err := ioutil.ReadFile(environments[env])
+	currPath, pathErr := os.Getwd()
+	if pathErr != nil {
+			fmt.Println("Error while determining working directory", pathErr)
+	}
+	envConfigPath := currPath + "/settings/" + environments[env]
+	content, err := ioutil.ReadFile(envConfigPath)
 	if err != nil {
 		fmt.Println("Error while reading config file", err)
 	}

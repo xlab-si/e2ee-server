@@ -1,17 +1,17 @@
 package api_tests
 
 import (
-	"e2ee/core/authentication"
-	"e2ee/routers"
-	"e2ee/services"
-	"e2ee/settings"
+	"github.com/xlab-si/e2ee-server/core/authentication"
+	"github.com/xlab-si/e2ee-server/routers"
+	"github.com/xlab-si/e2ee-server/services"
+	"github.com/xlab-si/e2ee-server/settings"
 	"fmt"
 	"github.com/codegangsta/negroni"
 	"github.com/stretchr/testify/assert"
 	. "gopkg.in/check.v1"
 	"net/http"
 	"net/http/httptest"
-	"code.google.com/p/go-uuid/uuid"
+	"github.com/pborman/uuid"
 	"os"
 	"testing"
 )

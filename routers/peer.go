@@ -1,8 +1,8 @@
 package routers
 
 import (
-	"e2ee/controllers"
-	"e2ee/core/authentication"
+	"github.com/xlab-si/e2ee-server/controllers"
+	"github.com/xlab-si/e2ee-server/core/authentication"
 	"github.com/codegangsta/negroni"
 	"github.com/gorilla/mux"
 )

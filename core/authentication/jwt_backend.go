@@ -1,9 +1,9 @@
 package authentication
 
 import (
-	"e2ee/core/redis"
-	"e2ee/core/db"
-	"e2ee/settings"
+	"github.com/xlab-si/e2ee-server/core/redis"
+	"github.com/xlab-si/e2ee-server/core/db"
+	"github.com/xlab-si/e2ee-server/settings"
 	"bufio"
 	"crypto/rsa"
 	"crypto/x509"

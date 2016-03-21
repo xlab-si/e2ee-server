@@ -1,13 +1,12 @@
 package api_tests
 
 import (
-	"e2ee/core/authentication"
-	"e2ee/routers"
-	//"e2ee/services"
-	"e2ee/settings"
-	"e2ee/core/db"
-	"e2ee/controllers"
-	"e2ee/api/parameters"
+	"github.com/xlab-si/e2ee-server/core/authentication"
+	"github.com/xlab-si/e2ee-server/routers"
+	"github.com/xlab-si/e2ee-server/settings"
+	"github.com/xlab-si/e2ee-server/core/db"
+	"github.com/xlab-si/e2ee-server/controllers"
+	"github.com/xlab-si/e2ee-server/api/parameters"
 	"fmt"
 	"github.com/codegangsta/negroni"
 	"github.com/stretchr/testify/assert"
@@ -15,7 +14,7 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"encoding/json"
-	"code.google.com/p/go-uuid/uuid"
+	"github.com/pborman/uuid"
 	"os"
 	"bytes"
 	"golang.org/x/crypto/bcrypt"

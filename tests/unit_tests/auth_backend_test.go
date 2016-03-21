@@ -1,12 +1,12 @@
 package unit_tests
 
 import (
-	"e2ee/core/authentication"
-	"e2ee/core/redis"
-	"e2ee/settings"
-	"e2ee/core/db"
+	"github.com/xlab-si/e2ee-server/core/authentication"
+	"github.com/xlab-si/e2ee-server/core/redis"
+	"github.com/xlab-si/e2ee-server/settings"
+	"github.com/xlab-si/e2ee-server/core/db"
 	jwt "github.com/dgrijalva/jwt-go"
-	"code.google.com/p/go-uuid/uuid"
+	"github.com/pborman/uuid"
 	"golang.org/x/crypto/bcrypt"
 	"github.com/stretchr/testify/assert"
 	. "gopkg.in/check.v1"
