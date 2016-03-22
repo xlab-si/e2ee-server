@@ -6,70 +6,74 @@ import (
         _"github.com/jinzhu/gorm/dialects/postgres"
         _"github.com/lib/pq"
         "github.com/pborman/uuid"
-	"github.com/spf13/viper"
-        "log"
+		"github.com/spf13/viper"
+        "fmt"
 )
 
 var db *gorm.DB
 
 func Init() {
-        hashedPassword, _ := bcrypt.GenerateFromPassword([]byte("testing"), 10)
-        user1 := User{
-                Username: "haku",
-                HashedPassword: string(hashedPassword),
-                Uuid:     uuid.New(),
-                Token:     "",
-        }
-        user2 := User{
-                Username: "miha",
-                HashedPassword: string(hashedPassword),
-                Uuid:     uuid.New(),
-                Token:     "",
-        }
-
-	viper.SetConfigName("config") // name of config file (without extension)
-	viper.AddConfigPath(".")
- 
-	err1 := viper.ReadInConfig()
-	if err1 != nil {
-		log.Println(err1)
+	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte("testing"), 10)
+	user1 := User{
+			Username: "haku",
+			HashedPassword: string(hashedPassword),
+			Uuid:     uuid.New(),
+			Token:     "",
 	}
-	var ip = viper.GetStringMap("database")["ip"]
-	log.Println(ip)
+	user2 := User{
+			Username: "miha",
+			HashedPassword: string(hashedPassword),
+			Uuid:     uuid.New(),
+			Token:     "",
+	}
+
+	viper.SetConfigName("config") 
+	viper.AddConfigPath("$GOPATH/src/github.com/xlab-si/e2ee-server/")
+ 
+	conf_err := viper.ReadInConfig()
+	if conf_err != nil {
+		fmt.Println(conf_err)
+	}
+
+	var conf = viper.GetStringMap("database")
+	var db_type = conf["type"].(string)
+	var conn_str = fmt.Sprintf("host=%s dbname=%s user=%s password=%s sslmode=disable",
+								conf["ip"], conf["name"], conf["user"], conf["password"])
+	//log.Println(conn_str)
 		
-        var err error
-        db, err = gorm.Open("postgres", "host=localhost dbname=e2ee user=postgres password=postgres sslmode=disable")
-        if err != nil {
-                panic(err)
-        }
+	var err error
+	db, err = gorm.Open(db_type, conn_str)
+	if err != nil {
+			panic(err)
+	}
 
-        // for testing:
-        db.DropTable(&User{})
-        db.DropTable(&Account{})
-        db.DropTable(&Container{})
-        db.DropTable(&ContainerRecord{})
-        db.DropTable(&ContainerSessionKeyShare{})
-        db.DropTable(&Message{})
+	// for testing:
+	db.DropTable(&User{})
+	db.DropTable(&Account{})
+	db.DropTable(&Container{})
+	db.DropTable(&ContainerRecord{})
+	db.DropTable(&ContainerSessionKeyShare{})
+	db.DropTable(&Message{})
 
-        db.CreateTable(&User{})
+	db.CreateTable(&User{})
 
-        var u = GetUser("haku")
-        if u.Username == "" {
-        //if u == nil {
-                db.Save(&user1)
-        }
+	var u = GetUser("haku")
+	if u.Username == "" {
+	//if u == nil {
+			db.Save(&user1)
+	}
 
-        u = GetUser("miha")
-        if u.Username == "" {
-        //if u == nil {
-                db.Save(&user2)
-        }
+	u = GetUser("miha")
+	if u.Username == "" {
+	//if u == nil {
+			db.Save(&user2)
+	}
 
-        db.CreateTable(&Account{})
-        db.CreateTable(&Container{})
-        db.CreateTable(&ContainerRecord{})
-        db.CreateTable(&ContainerSessionKeyShare{})
-        db.CreateTable(&Message{})
+	db.CreateTable(&Account{})
+	db.CreateTable(&Container{})
+	db.CreateTable(&ContainerRecord{})
+	db.CreateTable(&ContainerSessionKeyShare{})
+	db.CreateTable(&Message{})
 }
 
 func AddToken(username string, token string) {
