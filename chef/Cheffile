@@ -1,0 +1,19 @@
+#!/usr/bin/env ruby
+#^syntax detection
+
+site 'http://community.opscode.com/api/v1'
+
+cookbook 'apt', '3.0.0'
+cookbook 'postgresql', '4.0.2'
+cookbook 'golang', '1.7.0'
+cookbook 'redisio', '2.3.0'
+cookbook 'database', '4.0.9'
+
+cookbook 'e2ee', path: './site-cookbooks'
+
+# cookbook 'rvm',
+#   :git => 'https://github.com/fnichol/chef-rvm'
+
+# cookbook 'postgresql',
+#   :git => 'https://github.com/findsyou/cookbooks',
+#   :ref => 'postgresql-improvements'
