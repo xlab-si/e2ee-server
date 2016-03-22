@@ -72,7 +72,7 @@ func (s *StorageTestSuite) SetUpSuite(c *C) {
                 Token:     "",
         }
 
-	dbP, err := gorm.Open("postgres", "host=172.17.0.2 dbname=e2ee user=postgres sslmode=disable")
+	dbP, err := gorm.Open("postgres", "host=localhost password=postgres dbname=e2ee user=postgres sslmode=disable")
         if err != nil {
                 log.Fatal(err)
         }
