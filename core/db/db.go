@@ -6,7 +6,8 @@ import (
         _"github.com/jinzhu/gorm/dialects/postgres"
         _"github.com/lib/pq"
         "github.com/pborman/uuid"
-        //"log"
+	"github.com/spf13/viper"
+        "log"
 )
 
 var db *gorm.DB
@@ -25,6 +26,16 @@ func Init() {
                 Uuid:     uuid.New(),
                 Token:     "",
         }
+
+	viper.SetConfigName("config") // name of config file (without extension)
+	viper.AddConfigPath(".")
+ 
+	err1 := viper.ReadInConfig()
+	if err1 != nil {
+		log.Println(err1)
+	}
+	var ip = viper.GetStringMap("database")["ip"]
+	log.Println(ip)
 		
         var err error
         db, err = gorm.Open("postgres", "host=localhost dbname=e2ee user=postgres password=postgres sslmode=disable")
