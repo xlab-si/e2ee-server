@@ -1,5 +1,0 @@
-{
-  "PrivateKeyPath": "/home/user/goworkspace/src/e2ee-server/settings/keys/private_key",
-  "PublicKeyPath": "/home/user/goworkspace/src/e2ee-server/settings/keys/public_key.pub",
-  "JWTExpirationDelta": 72
-}

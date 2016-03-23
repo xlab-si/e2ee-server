@@ -1,10 +1,34 @@
 {
     "database": {
-        "ip": "172.17.0.2",
+        "ip": "localhost",
         "type": "postgres",
-        "database": "e2ee",
+        "name": "e2ee",
         "user": "postgres",
         "password": "postgres"
-    }
-}
+    },
 
+    "redis": {
+		"mode" : "tcp",
+		"port" : 6379,
+		"password" : "some_password"
+    },
+
+    "environments" : {
+		"preproduction" : {
+			"PrivateKeyPath" : "/home/vagrant/goworkspace/src/github.com/xlab-si/e2ee-server/settings/keys/private_key",
+			"PublicKeyPath" : "/home/vagrant/goworkspace/src/github.com/xlab-si/e2ee-server/settings/keys/public_key.pub",
+			"JWTExpirationDelta" : 72
+		},
+		"production" : {
+			"PrivateKeyPath" : "/home/vagrant/goworkspace/src/github.com/xlab-si/e2ee-server/settings/keys/private_key",
+			"PublicKeyPath" : "/home/vagrant/goworkspace/src/github.com/xlab-si/e2ee-server/settings/keys/public_key.pub",
+			"JWTExpirationDelta" : 72
+		},
+		"tests" : {
+			"PrivateKeyPath" : "/home/vagrant/goworkspace/src/github.com/xlab-si/e2ee-server/settings/keys/private_key",
+			"PublicKeyPath" : "/home/vagrant/goworkspace/src/github.com/xlab-si/e2ee-server/settings/keys/public_key.pub",
+			"JWTExpirationDelta" : 72
+		}
+    }	
+
+}

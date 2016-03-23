@@ -1,17 +1,10 @@
 package settings
 
 import (
-	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"os"
+	"github.com/spf13/viper"
 )
-
-var environments = map[string]string{
-	"production":    "/home/user/goworkspace/src/github.com/xlab-si/e2ee-server/settings/prod.json",
-	"preproduction": "/home/user/goworkspace/src/github.com/xlab-si/e2ee-server/settings/pre.json",
-	"tests":         "/home/user/goworkspace/src/github.com/xlab-si/e2ee-server/settings/tests.json",
-}
 
 type Settings struct {
 	PrivateKeyPath     string
@@ -32,14 +25,21 @@ func Init() {
 }
 
 func LoadSettingsByEnv(env string) {
-	content, err := ioutil.ReadFile(environments[env])
-	if err != nil {
-		fmt.Println("Error while reading config file", err)
+	
+	viper.SetConfigName("config") 
+	viper.AddConfigPath("$GOPATH/src/github.com/xlab-si/e2ee-server/")
+ 
+	conf_err := viper.ReadInConfig()
+	if conf_err != nil {
+		fmt.Println(conf_err)
 	}
+
+	var env_path = "environments." + env
 	settings = Settings{}
-	jsonErr := json.Unmarshal(content, &settings)
-	if jsonErr != nil {
-		fmt.Println("Error while parsing config file", jsonErr)
+	err := viper.UnmarshalKey(env_path, &settings)
+	
+	if err != nil {
+		fmt.Println("Error: Unable to unmarshal key to settings struct")
 	}
 }
 
