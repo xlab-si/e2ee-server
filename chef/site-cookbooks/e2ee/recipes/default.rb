@@ -11,14 +11,6 @@
 gopath = node['go']['gopath']
 e2ee_path = "#{gopath}/src/github.com/xlab-si/e2ee-server"
 
-# Modify paths to JSON configuration files in settings.go 
-template "#{e2ee_path}/settings/settings.go" do
-  source 'settings.erb'
-  variables ({
-    :settings_path => "#{e2ee_path}/settings"
-  })
-end
-
 # Install E2EE server
 execute "Installing E2EE Server" do
 	cwd "#{e2ee_path}"
@@ -34,7 +26,6 @@ end
 execute "Running API tests" do
 	cwd "#{e2ee_path}/tests/api_tests"
 	command "go test"
-	ignore_failure true # odstrani, ko bo pomergano spet
 end
 
 # Run E2EE Server in background, redirect ouptut to file 

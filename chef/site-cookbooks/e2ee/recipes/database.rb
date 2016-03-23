@@ -24,4 +24,3 @@ postgresql_database 'e2ee' do
   action :create
 end
 
-

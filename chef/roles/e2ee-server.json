@@ -24,9 +24,9 @@
 		"gopath" : "/home/vagrant/goworkspace", 
 		"owner" : "vagrant",
 		"packages" : [ 
-			"github.com/xlab-si/e2ee-server",
+			"gopkg.in/check.v1",
 			"github.com/stretchr/testify/assert",
-			"gopkg.in/check.v1"
+			"github.com/xlab-si/e2ee-server"
 		]
 	},
 	
@@ -47,6 +47,7 @@
 	"recipe[golang::packages]",
 	"recipe[e2ee::database]",
 	"recipe[e2ee::setup_keys]",
+	"recipe[e2ee::setup_config]",
 	"recipe[e2ee]"
   ]
 }
