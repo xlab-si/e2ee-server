@@ -29,9 +29,11 @@ Redis is used for storing expired tokens, the password needs to be changed and s
 Install PostgreSQL and create database e2ee:
 `CREATE DATABASE e2ee;`. Depending on what OS distribution you are running, you might also have to run `ALTER USER postgres PASSWORD 'postgres';`. For details, see db/db.go
 
-### 2.) Configure keys and paths
-Every environment (testing, preproduction, production) can be configured via appropriate .json configuration files residing in the settings/ folder. By default, server's public and private key are stored in the keys/ subfolder. You should generate a new RSA keypair for your server and update .json files to point to the locations where certificate and key are stored.
-Additionally, you have to update paths pointing to these configuration files in _settings/settings.go_ (see environments hash).
+### 2.) Configure E2EE server
+All configuration is placed in a single _.json_ file (see _config.json_). You can configure backend database, redis and environments.
+
+By default, server's public and private key are stored in the keys/ subfolder. You should generate a new RSA keypair for your server and update  _config.json_ to point to the locations where private and public keys are stored.
+
 
 ### 3.) Compile, test and run
 Navigate to your $GOPATH/src/github.com/xlab-si/e2ee-server directory and run
@@ -59,6 +61,3 @@ This product includes software developed at "XLAB d.o.o, Slovenia". The developm
 * http://www.specs-project.eu/
 * http://witdom.eu/
 * http://www.xlab.si/
-
-
-
