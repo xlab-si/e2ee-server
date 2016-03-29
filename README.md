@@ -60,7 +60,7 @@ E2EE server exposes a REST API which is used by E2EE client. The API has to be a
 
 ### Authentication
 
-POST /token-auth
+**POST /token-auth**
 
 Request:
 
@@ -79,21 +79,22 @@ Response:
 }
 ```
 
-GET /refresh-token-auth
+**GET /refresh-token-auth**
+
 Response:
 
 ```
-
 { 
 	token:"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOjIsImV4cCI6MTQ1OTQ5Mzk5MiwiaWF0IjoxNDU5MjM0NzkyLCJuYW1lIjoibWloYSIsInN1YiI6ImE3MjdhZDFjLWRhNjgtNGFjNi04ZDQ3LTllNTQ2N2ZlN2ZjZiJ9.1E6eeTVs72ZgxgicTlDIg1_90bCbqZyQIWBEPN5kOAT3-_Q8y9WuExypPyMdRSFaeUqtSeXWba5jeuUvUTnRuURG3qiPsB4mF_f9sv0HlWeaW9HJj8qLYX2IG6ILQLd87R61jiAtvfB_6ndOCb1ADmsWwUoXB1xbRyMnXytIUAL3xL2cIGFCACrQi27O13QLNkP6Mh1Kq9PMModI2rOB6xDccuO976ymVLKEKwgCNwBvsBAH2F8rPoTI7hJ80hdQ0lJHKJLBeJBHVDuDJ1BPT_NCrDr5q_WVoprpyB_nszxQyYkaX6SV-NUVRJsYJ6m9JgPasYMZ_92gefe1KPZDfQ"
 }
 ```
 
-GET /logout
+**GET /logout**
 
 ### Account
 
-GET /accountexists
+**GET /accountexists**
+
 Response:
 
 ```
@@ -102,7 +103,8 @@ Response:
 }
 ```
 
-GET /account
+**GET /account**
+
 Response:
 
 ```
@@ -127,7 +129,8 @@ keypairCiphertext:"{"iv":"RUcGtDIsy1FHWX81gMFLA==","v":1,"iter":1000,"ks":128,"t
 
 ```
 
-POST /account
+**POST /account**
+
 Response:
 
 ```
@@ -140,7 +143,8 @@ Response:
 
 ### Containers
 
-PUT /container/{containerNameHmac}
+**PUT /container/{containerNameHmac}**
+
 Request (it creates an empty container which is later to be filled with container records; toAccountId value is the accout ID of the creator, sessionKeyCiphertext contains the key with which the container records are encrypted):
 
 ```
@@ -161,7 +165,8 @@ Response:
 }
 ```
 
-POST /container/record
+**POST /container/record**
+
 Request:
 
 ```
@@ -180,7 +185,8 @@ Response:
 }
 ```
 
-POST /container/{containerNameHmac}
+**POST /container/{containerNameHmac}**
+
 Response:
 
 ```
@@ -192,7 +198,8 @@ Response:
 }
 ```
 
-POST /container/share
+**POST /container/share**
+
 Request (toAccountId value is the accout ID of the user to whom the container is shared, sessionKeyCiphertext contains the key with which the container records are encrypted – the records are not encrypted for each user, only the key with which the records are encrypted is encrypted with a public key of the user, meaning that sharing operation adds only a (encrypted) key to the database):
 
 ```
@@ -212,7 +219,8 @@ Response:
 }
 ```
 
-POST /container/unshare
+**POST /container/unshare**
+
 Request:
 
 ```
@@ -231,7 +239,8 @@ Response:
 }
 ```
 
-DELETE /container/{containerNameHmac}
+**DELETE /container/{containerNameHmac}**
+
 Response:
 
 ```
@@ -243,7 +252,8 @@ Response:
 
 ### PEERs
 
-GET /peer/{username}
+**GET /peer/{username}**
+
 Response:
 
 ```
@@ -259,7 +269,8 @@ Response:
 }
 ```
 
-POST /peer
+**POST /peer**
+
 Request (send an encrypted message to peer – for example a notification that the file has been shared):
 
 ```
@@ -273,10 +284,12 @@ Request (send an encrypted message to peer – for example a notification that t
 
 ### Messages
 
-GET /messages 
+**GET /messages**
+
 Returns all messages sent from other peers.
 
-DELETE /messages 
+**DELETE /messages**
+
 Deletes all messages sent from other peers.
 
 ## NOTICE #
