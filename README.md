@@ -61,14 +61,18 @@ E2EE server exposes a REST API which is used by E2EE client. The API has to be a
 ### Authentication
 
 POST /token-auth
+
 Request:
+
 ```
 { 
 	username: "miha",
 	password: "some password"
 }
 ```
+
 Response:
+
 ```
 { 
 	token:"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOjEsImV4cCI6MTQ1OTQ5MzczMywiaWF0IjoxNDU5MjM0NTMzLCJuYW1lIjoiaGFrdSIsInN1YiI6IjAzOTMyMjE3LWI1NWYtNGYyMy04NDQwLTIyN2UyNDFhNmRmMCJ9.mgSqigVNC7UYzFD8l1duJTsJTUQGhoIKOZ7yZ80piTXrhrn-H_IsOMB4_LBOKl_5AMFu9kbgnVxEF8bwekwzcaVs4IkCr0_HczfhxE9mW5tXDdNyWBh5UyXh_KwUbKWyWxaQY_MrWUkgxvldwatzmqkOOO2GQ-Tb7NNwulpkTJucwNOT0CB5q5yNxN0bAb5bZhd7tUVQ85pr5n0DU3apOMLbM1ItoXUT4dDr_pqQxMEsyvYtjdL0xEi4kvS5gQUfYjjU9SURfNLk5VG9du1Et6X2MqxVnh8yLdimXQNW2pEWkLuTNEAIJpSFEUH0qen2UGxIaqy0ksXfpbipxCYAQw"
@@ -77,7 +81,9 @@ Response:
 
 GET /refresh-token-auth
 Response:
+
 ```
+
 { 
 	token:"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOjIsImV4cCI6MTQ1OTQ5Mzk5MiwiaWF0IjoxNDU5MjM0NzkyLCJuYW1lIjoibWloYSIsInN1YiI6ImE3MjdhZDFjLWRhNjgtNGFjNi04ZDQ3LTllNTQ2N2ZlN2ZjZiJ9.1E6eeTVs72ZgxgicTlDIg1_90bCbqZyQIWBEPN5kOAT3-_Q8y9WuExypPyMdRSFaeUqtSeXWba5jeuUvUTnRuURG3qiPsB4mF_f9sv0HlWeaW9HJj8qLYX2IG6ILQLd87R61jiAtvfB_6ndOCb1ADmsWwUoXB1xbRyMnXytIUAL3xL2cIGFCACrQi27O13QLNkP6Mh1Kq9PMModI2rOB6xDccuO976ymVLKEKwgCNwBvsBAH2F8rPoTI7hJ80hdQ0lJHKJLBeJBHVDuDJ1BPT_NCrDr5q_WVoprpyB_nszxQyYkaX6SV-NUVRJsYJ6m9JgPasYMZ_92gefe1KPZDfQ"
 }
@@ -88,8 +94,9 @@ GET /logout
 ### Account
 
 GET /accountexists
-```
 Response:
+
+```
 { 
 	exists: true
 }
@@ -97,6 +104,7 @@ Response:
 
 GET /account
 Response:
+
 ```
 { 
 	account: 
@@ -116,10 +124,12 @@ keypairCiphertext:"{"iv":"RUcGtDIsy1FHWX81gMFLA==","v":1,"iter":1000,"ks":128,"t
 	},
 	success: true
 }
+
 ```
 
 POST /account
 Response:
+
 ```
 { 
 	success: true,
@@ -127,10 +137,12 @@ Response:
 }
 ```
 
+
 ### Containers
 
 PUT /container/{containerNameHmac}
 Request (it creates an empty container which is later to be filled with container records; toAccountId value is the accout ID of the creator, sessionKeyCiphertext contains the key with which the container records are encrypted):
+
 ```
 { 
 	toAccountId: 2,
@@ -141,6 +153,7 @@ Request (it creates an empty container which is later to be filled with containe
 ```
 
 Response:
+
 ```
 { 
 	success: true,
@@ -150,6 +163,7 @@ Response:
 
 POST /container/record
 Request:
+
 ```
 { 
 	containerNameHmac: "1f806eda7c2b249b315853fe3c117a919d1bab4a9a776cce6b02beaa7987671a",
@@ -158,6 +172,7 @@ Request:
 ```
 
 Response:
+
 ```
 { 
 	success: true,
@@ -167,6 +182,7 @@ Response:
 
 POST /container/{containerNameHmac}
 Response:
+
 ```
 { 
 	success: true,
@@ -178,6 +194,7 @@ Response:
 
 POST /container/share
 Request (toAccountId value is the accout ID of the user to whom the container is shared, sessionKeyCiphertext contains the key with which the container records are encrypted – the records are not encrypted for each user, only the key with which the records are encrypted is encrypted with a public key of the user, meaning that sharing operation adds only a (encrypted) key to the database):
+
 ```
 { 
 	toAccountId: 3,
@@ -187,6 +204,7 @@ sessionKeyCiphertext: "{"ciphertext":{"iv":"lL7Vt3hsmLDg+nu6pkv7Kg==","v":1,"ite
 ```
 
 Response:
+
 ```
 { 
 	success: true,
@@ -196,6 +214,7 @@ Response:
 
 POST /container/unshare
 Request:
+
 ```
 { 
 	containerNameHmac: "1f806eda7c2b249b315853fe3c117a919d1bab4a9a776cce6b02beaa7987671a",
@@ -204,6 +223,7 @@ Request:
 ```
 
 Response:
+
 ```
 { 
 	success: true,
@@ -213,6 +233,7 @@ Response:
 
 DELETE /container/{containerNameHmac}
 Response:
+
 ```
 { 
 	success: true,
@@ -223,6 +244,8 @@ Response:
 ### PEERs
 
 GET /peer/{username}
+Response:
+
 ```
 {
 	success:true,
@@ -238,6 +261,7 @@ GET /peer/{username}
 
 POST /peer
 Request (send an encrypted message to peer – for example a notification that the file has been shared):
+
 ```
 { 
 	fromUsername: "miha",
