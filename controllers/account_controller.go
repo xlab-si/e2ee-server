@@ -20,7 +20,6 @@ type ResponseMessage struct {
 type AccountResponseMessage struct {
     Success bool `json:"success"`
     Account db.Account `json:"account"`
-    Sid int `json:"sid"`
 }
 
 type AccountExistsResponse struct {
