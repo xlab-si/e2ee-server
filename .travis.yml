@@ -9,6 +9,10 @@ go:
   #- tip
 #go_import_path
 
+install:
+  - go get gopkg.in/check.v1
+  - go get github.com/stretchr/testify/assert
+
 services:
   - postgresql  
 
@@ -17,11 +21,8 @@ before_script:
   - sudo redis-server /etc/redis/redis.conf --requirepass 'some_password'
   
 script: 
-  - go get gopkg.in/check.v1
-  - go get github.com/stretchr/testify/assert
-  - go get github.com/xlab-si/e2ee-server
-  - go test ./tests/unit_tests
-  - go test ./tests/api_tests
+  - go test -v ./tests/unit_tests
+  - go test -v ./tests/api_tests
   
  
 
