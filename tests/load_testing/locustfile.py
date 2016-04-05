@@ -47,7 +47,7 @@ class UserBehavior(TaskSet):
 	#print "Response content: %s" % response.content
 
     @task(3)
-    def account_create1(self):
+    def account_create2(self):
 	headers = {"Authorization":"Bearer %s" % self.token2}
 	account = {
 		"ContainerNameHmacKeyCiphertext": "",
