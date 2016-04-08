@@ -33,7 +33,7 @@ func LoadSettingsByEnv(env string) {
 		// Read configuration from config file
 		fmt.Println("Environment variables not set, reading settings from config file")
 		viper.SetConfigName("config") 
-		viper.AddConfigPath("$GOPATH/src/github.com/mancabizjak/e2ee-server/")
+		viper.AddConfigPath("$GOPATH/src/github.com/xlab-si/e2ee-server/")
 	 
 		conf_err := viper.ReadInConfig()
 		if conf_err != nil {
