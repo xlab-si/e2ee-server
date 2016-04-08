@@ -1,12 +1,12 @@
 package api_tests
 
 import (
-	"github.com/xlab-si/e2ee-server/core/authentication"
-	"github.com/xlab-si/e2ee-server/routers"
+	"github.com/mancabizjak/e2ee-server/core/authentication"
+	"github.com/mancabizjak/e2ee-server/routers"
 	"github.com/mancabizjak/e2ee-server/settings"
-	"github.com/xlab-si/e2ee-server/core/db"
-	"github.com/xlab-si/e2ee-server/controllers"
-	"github.com/xlab-si/e2ee-server/api/parameters"
+	"github.com/mancabizjak/e2ee-server/core/db"
+	"github.com/mancabizjak/e2ee-server/controllers"
+	"github.com/mancabizjak/e2ee-server/api/parameters"
 	"fmt"
 	"github.com/codegangsta/negroni"
 	"github.com/stretchr/testify/assert"

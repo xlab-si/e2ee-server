@@ -2,7 +2,7 @@ package controllers
 
 import (
         jwt "github.com/dgrijalva/jwt-go"
-        "github.com/xlab-si/e2ee-server/core/authentication"
+        "github.com/mancabizjak/e2ee-server/core/authentication"
         "net/http"
 	"log"
 )
