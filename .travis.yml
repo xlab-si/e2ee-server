@@ -6,6 +6,8 @@ go:
   - 1.6
   #- tip
 
+go_import_path: github.com/mancabizjak/e2ee-server
+  
 install:
   - go get gopkg.in/check.v1
   - go get github.com/stretchr/testify/assert
