@@ -4,7 +4,7 @@ This is a server for storage of encrypted files. It provides REST API for user a
 
 *NOTE*: E2EE server is a work in progress. There are issues to be fixed, for example database scheme, switching to HTTPS, and authentication (currently, the tokens are used and are issued by the server itself). 
 
-### 1.) Prerequisites
+### 1. Prerequisites
 In order to get E2EE server up and running, you will need the following:
 * golang
 * redis
@@ -29,13 +29,13 @@ Redis is used for storing expired tokens, the password needs to be changed and s
 Install PostgreSQL and create database e2ee:
 `CREATE DATABASE e2ee;`. Depending on what OS distribution you are running, you might also have to run `ALTER USER postgres PASSWORD 'postgres';`. For details, see db/db.go
 
-### 2.) Configure E2EE server
+### 2. Configure E2EE server
 All configuration is placed in a single _.json_ file (see _config.json_). You can configure backend database, redis and environments.
 
 By default, server's public and private key are stored in the keys/ subfolder. You should generate a new RSA keypair for your server and update  _config.json_ to point to the locations where private and public keys are stored.
 
 
-### 3.) Compile, test and run
+### 3. Compile, test and run
 Navigate to your $GOPATH/src/github.com/xlab-si/e2ee-server directory and run
 ```sh
 $ go install
