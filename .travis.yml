@@ -5,15 +5,16 @@ go:
   #- 1.5
   - 1.6
   #- tip
-
-go_import_path: github.com/mancabizjak/e2ee-server
   
 install:
   - go get gopkg.in/check.v1
   - go get github.com/stretchr/testify/assert
-  - go get github.com/mancabizjak/e2ee-server
+  # -u -> update named packages and their dependencies
+  # -f -> forces not to verify that each package has been checked out from the source control repository implied by its import path
+  - go get -u -f github.com/mancabizjak/e2ee-server
+  #- go get github.com/xlab-si/e2ee-server
 
-services:
+ services:
   - postgresql  
 
 before_script:
