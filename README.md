@@ -1,4 +1,5 @@
 # End-to-End Encryption (E2EE) server
+[![Build Status](https://travis-ci.org/mancabizjak/e2ee-server.svg?branch=master)](https://travis-ci.org/mancabizjak/e2ee-server)
 
 This is a server for storage of encrypted files. It provides REST API for user accounts, data storage, and sharing information between users. The client is available at https://github.com/xlab-si/e2ee-client.
 
