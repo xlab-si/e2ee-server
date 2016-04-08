@@ -19,11 +19,10 @@ before_script:
   - sudo redis-server /etc/redis/redis.conf --requirepass 'some_password'
   
 script: 
+  # Env variables are set here, because TRAVIS_BUILD_DIR is already set at this point
+  - export ENV_TESTS_PRIV=${TRAVIS_BUILD_DIR}/settings/keys/private_key
+  - export ENV_TESTS_PUB=${TRAVIS_BUILD_DIR}/settings/keys/public_key.pub
+  - export ENV_TESTS_JWT=72
   - go test -v ./tests/unit_tests
   - go test -v ./tests/api_tests
-  
-env:
-  - ENV_TESTS_PRIV=${TRAVIS_BUILD_DIR}/settings/keys/private_key
-  - ENV_TESTS_PUB=${TRAVIS_BUILD_DIR}/settings/keys/public_key.pub
-  - ENV_TESTS_JWT=72
 
