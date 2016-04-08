@@ -1,13 +1,10 @@
 language: go
 
-#sudo: false # for container based testing
-
 go:
   #- 1.4
   #- 1.5
   - 1.6
   #- tip
-#go_import_path
 
 install:
   - go get gopkg.in/check.v1
@@ -25,5 +22,8 @@ script:
   - go test -v ./tests/unit_tests
   - go test -v ./tests/api_tests
   
- 
+env:
+  - ENV_TESTS_PRIV=$TRAVIS_BUILD_DIR/settings/keys/private_key
+  - ENV_TESTS_PUB=$TRAVIS_BUILD_DIR/settings/keys/public_key.pub
+  - ENV_TESTS_JWT=72
 

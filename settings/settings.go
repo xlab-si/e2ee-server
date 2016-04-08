@@ -25,22 +25,44 @@ func Init() {
 }
 
 func LoadSettingsByEnv(env string) {
-	
-	viper.SetConfigName("config") 
-	viper.AddConfigPath("$GOPATH/src/github.com/xlab-si/e2ee-server/")
- 
-	conf_err := viper.ReadInConfig()
-	if conf_err != nil {
-		fmt.Println(conf_err)
-	}
+	if EnvVariablesSet(env) {
+		// Read configuration from environment variables
+		fmt.Println("Reading settings from environment variables")
+		settings = LoadSettingsFromEnvVars(env)
+	} else {
+		// Read configuration from config file
+		fmt.Println("Environment variables not set, reading settings from config file")
+		viper.SetConfigName("config") 
+		viper.AddConfigPath("$GOPATH/src/github.com/xlab-si/e2ee-server/")
+	 
+		conf_err := viper.ReadInConfig()
+		if conf_err != nil {
+			fmt.Println(conf_err)
+		}
 
-	var env_path = "environments." + env
-	settings = Settings{}
-	err := viper.UnmarshalKey(env_path, &settings)
-	
-	if err != nil {
-		fmt.Println("Error: Unable to unmarshal key to settings struct")
+		var env_path = "environments." + env
+		settings = Settings{}
+		err := viper.UnmarshalKey(env_path, &settings)
+		
+		if err != nil {
+			fmt.Println("Error: Unable to unmarshal key to settings struct")
+		}
 	}
+}
+
+// Checks for the presence of env variables
+func EnvVariablesSet(env string) bool {
+	viper.SetEnvPrefix("env"); // variables of form ENV_
+	viper.AutomaticEnv()
+	
+	return viper.IsSet(env + "_priv") && viper.IsSet(env + "_pub") && viper.IsSet(env + "_jwt")
+}
+
+// Reads configuration settings to global settings struct
+func LoadSettingsFromEnvVars(env string) Settings {
+	return Settings { PrivateKeyPath: viper.GetString(env + "_priv"),
+					 PublicKeyPath: viper.GetString(env + "_pub"),
+					 JWTExpirationDelta: viper.GetInt(env + "_jwt") }
 }
 
 func GetEnvironment() string {
