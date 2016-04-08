@@ -6,6 +6,7 @@ go:
   - 1.6
   #- tip
 
+# Override our repo's default import path  
 go_import_path: github.com/xlab-si/e2ee-server
   
 install:
@@ -14,7 +15,7 @@ install:
   - go get -u -f github.com/mancabizjak/e2ee-server
   # -u -> update named packages and their dependencies
   # -f -> forces not to verify that each package has been checked out from the source control repository implied by its import path
-  #- go get -u -f github.com/mancabizjak/e2ee-server
+  
   #- go get github.com/xlab-si/e2ee-server
 
 services:
