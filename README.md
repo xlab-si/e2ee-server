@@ -1,4 +1,5 @@
 # End-to-End Encryption (E2EE) server
+[![Build Status](https://travis-ci.org/mancabizjak/e2ee-server.svg?branch=master)](https://travis-ci.org/mancabizjak/e2ee-server)
 
 This is a server for storage of encrypted files. It provides REST API for user accounts, data storage, and sharing information between users. The client is available at https://github.com/xlab-si/e2ee-client.
 
@@ -30,9 +31,9 @@ Install PostgreSQL and create database e2ee:
 `CREATE DATABASE e2ee;`. Depending on what OS distribution you are running, you might also have to run `ALTER USER postgres PASSWORD 'postgres';`. For details, see db/db.go
 
 ### 2. Configure E2EE server
-All configuration is placed in a single _.json_ file (see _config.json_). You can configure backend database, redis and environments.
+All configuration is placed in a single _.json_ file (see _config/config.json_). You can configure backend database, redis and environments. Alternatively, all environment-specific configuration (paths to private and public keys, JWT expiration delta) can be set through environment variables of form ENV_env_PRIV (path to private key), ENV_env_PUB (path to public key) and ENV_env_JWT (integer value), where _env_ can be any of TESTS, PREPRODUCTION or PRODUCTION.
 
-By default, server's public and private key are stored in the keys/ subfolder. You should generate a new RSA keypair for your server and update  _config.json_ to point to the locations where private and public keys are stored.
+By default, server's public and private key are stored in the _settings/keys/_ subfolder. You should generate a new RSA keypair for your server and update  _config.json_ to point to the locations where private and public keys are stored.
 
 
 ### 3. Compile, test and run

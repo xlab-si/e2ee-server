@@ -5,6 +5,7 @@ import (
 	"github.com/xlab-si/e2ee-server/routers"
 	"github.com/xlab-si/e2ee-server/services"
 	"github.com/xlab-si/e2ee-server/settings"
+	"github.com/xlab-si/e2ee-server/config"
 	"fmt"
 	"github.com/codegangsta/negroni"
 	"github.com/stretchr/testify/assert"
@@ -29,6 +30,7 @@ var server *negroni.Negroni
 
 func (s *MiddlewaresTestSuite) SetUpSuite(c *C) {
 	os.Setenv("GO_ENV", "tests")
+	config.Init()
 	settings.Init()
 
 	authBackend := authentication.InitJWTAuthenticationBackend()

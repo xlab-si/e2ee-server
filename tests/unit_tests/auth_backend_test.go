@@ -4,6 +4,7 @@ import (
 	"github.com/xlab-si/e2ee-server/core/authentication"
 	"github.com/xlab-si/e2ee-server/core/redis"
 	"github.com/xlab-si/e2ee-server/settings"
+	"github.com/xlab-si/e2ee-server/config"
 	"github.com/xlab-si/e2ee-server/core/db"
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/pborman/uuid"
@@ -25,6 +26,7 @@ var t *testing.T
 
 func (s *AuthenticationBackendTestSuite) SetUpSuite(c *C) {
 	os.Setenv("GO_ENV", "tests")
+	config.Init()
 	settings.Init()
 	db.Init()
 }

@@ -16,14 +16,6 @@ func Connect() (conn *RedisCli) {
 	if instanceRedisCli == nil {
 		instanceRedisCli = new(RedisCli)
 		
-		viper.SetConfigName("config") 
-		viper.AddConfigPath("$GOPATH/src/github.com/xlab-si/e2ee-server/")
-	 
-		conf_err := viper.ReadInConfig()
-		if conf_err != nil {
-			fmt.Println(conf_err)
-		}
-		
 		// Read values from config file
 		var port = viper.GetInt("redis.port")
 		var network_mode = viper.GetString("redis.mode")

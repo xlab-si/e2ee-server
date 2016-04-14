@@ -12,7 +12,7 @@ gopath = node['go']['gopath']
 e2ee_path = "#{gopath}/src/github.com/xlab-si/e2ee-server"
 
 # Modify config with desired backend settings
-template "#{e2ee_path}/config.json" do
+template "#{e2ee_path}/config/config.json" do
   source 'config.erb'
   variables ({
 	:private_key_path => "#{node['e2ee']['private_key']}",

@@ -1,0 +1,35 @@
+language: go
+
+go:
+  #- 1.4
+  #- 1.5
+  - 1.6
+  #- tip
+
+# Override our repo's default import path  
+go_import_path: github.com/xlab-si/e2ee-server
+  
+install:
+  - go get gopkg.in/check.v1
+  - go get github.com/stretchr/testify/assert
+  - go get -u -f github.com/mancabizjak/e2ee-server
+  # -u -> update named packages and their dependencies
+  # -f -> forces not to verify that each package has been checked out from the source control repository implied by its import path
+  
+  #- go get github.com/xlab-si/e2ee-server
+
+services:
+  - postgresql  
+
+before_script:
+  - psql -c 'create database e2ee;' -U postgres
+  - sudo redis-server /etc/redis/redis.conf --requirepass 'some_password'
+  
+script: 
+  # Env variables are set here, because TRAVIS_BUILD_DIR is already set at this point
+  - export ENV_TESTS_PRIV=${TRAVIS_BUILD_DIR}/settings/keys/private_key
+  - export ENV_TESTS_PUB=${TRAVIS_BUILD_DIR}/settings/keys/public_key.pub
+  - export ENV_TESTS_JWT=72
+  - go test -v ./tests/unit_tests
+  - go test -v ./tests/api_tests
+
