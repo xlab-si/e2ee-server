@@ -3,10 +3,12 @@ package main
 import (
 	"github.com/codegangsta/negroni"
 	"github.com/rs/cors"
+	"github.com/spf13/viper"
 	"github.com/xlab-si/e2ee-server/config"
 	"github.com/xlab-si/e2ee-server/core/db"
 	"github.com/xlab-si/e2ee-server/routers"
 	"net/http"
+	"fmt"
 )
 
 func main() {
@@ -26,5 +28,11 @@ func main() {
 	n.Use(c)
 	n.UseHandler(router)
 
-	http.ListenAndServe(":8080", n)
+	http_conf := viper.GetStringMap("https")
+	port := fmt.Sprintf(":%s", http_conf["port"])
+	key := fmt.Sprintf("%s/%s", http_conf["path"], http_conf["key"])
+	cert := fmt.Sprintf("%s/%s", http_conf["path"], http_conf["cert"])
+	
+	err := http.ListenAndServeTLS(port, cert, key, n)
+	fmt.Println(err)
 }
