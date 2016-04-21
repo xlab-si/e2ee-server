@@ -8,7 +8,7 @@ From chef/ directory, run
 ```bash
 $ librarian-chef install
 ```
-Which will fetch dependencies and download them to the cookbooks/ folder. This command should also be run if you apply any changes to recipes in site-cookbooks/ folder.
+which will fetch dependencies and download them to the cookbooks/ folder. This command should also be run if you apply any changes to recipes in site-cookbooks/ folder.
 
 To start chef-solo provisioner with vagrant, run
 ```bash
@@ -22,14 +22,14 @@ $ vagrant reload --provision
 
 ## Content
 ### Roles
-This Chef repository includes a single role, _e2ee-server_, that automatically configures postgres, redis, RSA keys and paths for use with E2EE server.
+This Chef repository includes a single role, _e2ee-server_, that automatically configures postgres, generates x509 certificate and key for the server, runs tests and starts the server.
 
-You should change absolute paths included in attribute values according to your preferred configuration. 
+You should modify the attributes' values in this role according to your preferences. 
 
 ### Recipes
 *  _default.rb_ - Installs, tests and runs E2EE server
 * _database.rb_ - Sets up and configures postgres backend for E2EE server
-* _setup_keys.rb_ - Sets up RSA keypair for E2EE server and configures paths to keys in configuration files
+* _setup_keys.rb_ - Sets up X509 certificate for E2EE server, needed to establish HTTPS communication
 * _setup_config.rb_ - Sets up config.json for E2EE server based on provided attributes
 
 ### Templates
