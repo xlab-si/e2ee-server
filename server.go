@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/xlab-si/e2ee-server/routers"
 	"github.com/xlab-si/e2ee-server/core/db"
+	"github.com/xlab-si/e2ee-server/config"
 	"github.com/codegangsta/negroni"
 	"github.com/rs/cors"
 	"net/http"
@@ -18,6 +19,7 @@ func main() {
 		//Debug: true,
         })
 
+	config.Init()
 	db.Init()
 	router := routers.InitRoutes(true)
 	n := negroni.Classic()
