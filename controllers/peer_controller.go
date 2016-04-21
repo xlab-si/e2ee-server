@@ -14,7 +14,7 @@ import (
 )
 
 type Peer struct {
-    AccountId uint `json:"accountId"`
+    AccountId string `json:"accountId"`
     Username string `json:"username"`
     PubKey string `json:"pubKey"`
     SignKeyPub string `json:"signKeyPub"`
@@ -27,7 +27,7 @@ type PeerMessage struct {
 
 type Notification struct {
     FromUsername string `json:"fromUsername"`
-    ToAccountId uint `json:"toAccountId"`
+    ToAccountId string `json:"toAccountId"`
     HeadersCiphertext string `json:"headersCiphertext"`
     PayloadCiphertext string `json:"payloadCiphertext"`
 }
@@ -42,9 +42,13 @@ func PeerGet(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
         p := strings.SplitN(r.URL.RequestURI()[1:], "/", 3)
         peerName := p[1]
 	log.Println(peerName)
+	peerName = strings.Replace(peerName, "%20", " ", -1)
+	peerName = strings.TrimSpace(peerName)
 	account := db.FindAccountByName(peerName)
+	log.Println(peerName)
+	log.Println("-----")
 	success := false 
-	if account.AccountId != 0 {
+	if account.AccountId != "" {
 	    success = true
 	}
 
@@ -54,6 +58,7 @@ func PeerGet(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	    PubKey: account.PubKey,	
 	    SignKeyPub: account.SignKeyPub,
 	}
+	log.Println(peer)
 	var m = PeerMessage{
 	    Success: success,
 	    Peer: peer,
@@ -67,7 +72,7 @@ func PeerGet(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 }
 
 func PeerNotify(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
-	_, _, accountId := ExtractTokenInfo(r)
+	accountId, _ := GetAccountInfo(r)
 
         body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
         log.Println(err)

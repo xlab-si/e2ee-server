@@ -20,7 +20,7 @@ type ContainerResponseMessage struct {
 }
 
 type ContainerCreateChunk struct {
-    ToAccountId int `json:"toAccountId"`
+    ToAccountId string `json:"toAccountId"`
     SessionKeyCiphertext string `json:"sessionKeyCiphertext"`
 }
 
@@ -31,17 +31,17 @@ type RecordCreateChunk struct {
 
 type ContainerShareChunk struct {
     ContainerNameHmac string `json:"containerNameHmac"`
-    ToAccountId uint `json:"toAccountId"`
+    ToAccountId string `json:"toAccountId"`
     SessionKeyCiphertext string `json:"sessionKeyCiphertext"`
 }
 
 type ContainerUnshareChunk struct {
     ContainerNameHmac string `json:"containerNameHmac"`
-    ToAccountId uint `json:"toAccountId"`
+    ToAccountId string `json:"toAccountId"`
 }
 
 func ContainerGet(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
-	_, _, accountId := ExtractTokenInfo(r)
+	accountId, _ := GetAccountInfo(r)
         p := strings.SplitN(r.URL.RequestURI()[1:], "/", 3)
         p0 := strings.SplitN(p[1], "?", 3)
 	containerNameHmac := p0[0]
@@ -71,7 +71,7 @@ func ContainerGet(w http.ResponseWriter, r *http.Request, next http.HandlerFunc)
 }
 
 func ContainerCreate(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
-	_, _, accountId := ExtractTokenInfo(r)
+	accountId, _ := GetAccountInfo(r)
         p := strings.SplitN(r.URL.RequestURI()[1:], "/", 3)
 	containerNameHmac := p[1]
 
@@ -136,7 +136,7 @@ func ContainerDelete(w http.ResponseWriter, r *http.Request, next http.HandlerFu
 }
 
 func ContainerRecordCreate(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
-	_, _, accountId := ExtractTokenInfo(r)
+	accountId, _ := GetAccountInfo(r)
 	var chunk RecordCreateChunk
         //body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
 	// records might contain large files, thus no limitation is 
@@ -189,7 +189,7 @@ func ContainerRecordCreate(w http.ResponseWriter, r *http.Request, next http.Han
 }
 
 func ContainerShare(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
-	_, _, accountId := ExtractTokenInfo(r)
+	accountId, _ := GetAccountInfo(r)
 
 	var chunk ContainerShareChunk
         body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
@@ -224,7 +224,7 @@ func ContainerShare(w http.ResponseWriter, r *http.Request, next http.HandlerFun
 }
 
 func ContainerUnshare(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
-	_, _, accountId := ExtractTokenInfo(r)
+	accountId, _ := GetAccountInfo(r)
 
 	var chunk ContainerUnshareChunk
         body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))

@@ -6,8 +6,8 @@ import (
 
 type Message struct {
 	gorm.Model
-	FromAccountId      uint    `json:"fromAccountId"`
-	ToAccountId      uint    `json:"toAccountId"`
+	FromAccountId      string    `json:"fromAccountId"`
+	ToAccountId      string    `json:"toAccountId"`
 	HeadersCiphertext      string    `json:"headersCiphertext" sql:"type:text"`
 	PayloadCiphertext      string    `json:"payloadCiphertext" sql:"type:text"`
 }

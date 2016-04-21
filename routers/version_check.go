@@ -7,12 +7,19 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func SetVersionCheckRoute(router *mux.Router) *mux.Router {
-	router.Handle("/versioncheck",
-		negroni.New(
-			negroni.HandlerFunc(authentication.RequireTokenAuthentication),
-			negroni.HandlerFunc(controllers.VersionCheck),
-		)).Methods("GET")
+func SetVersionCheckRoute(router *mux.Router, authenticationRequired bool) *mux.Router {
+	if (authenticationRequired) {
+		router.Handle("/versioncheck",
+			negroni.New(
+				negroni.HandlerFunc(authentication.RequireTokenAuthentication),
+				negroni.HandlerFunc(controllers.VersionCheck),
+			)).Methods("GET")
+	} else {
+		router.Handle("/versioncheck",
+			negroni.New(
+				negroni.HandlerFunc(controllers.VersionCheck),
+			)).Methods("GET")
+	}
 
 	return router
 }

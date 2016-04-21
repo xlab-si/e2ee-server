@@ -2,7 +2,6 @@ package main
 
 import (
 	"github.com/xlab-si/e2ee-server/routers"
-	"github.com/xlab-si/e2ee-server/settings"
 	"github.com/xlab-si/e2ee-server/core/db"
 	"github.com/xlab-si/e2ee-server/config"
 	"github.com/codegangsta/negroni"
@@ -21,9 +20,8 @@ func main() {
         })
 
 	config.Init()
-	settings.Init()
 	db.Init()
-	router := routers.InitRoutes()
+	router := routers.InitRoutes(true)
 	n := negroni.Classic()
 	n.Use(c)
 	n.UseHandler(router)
