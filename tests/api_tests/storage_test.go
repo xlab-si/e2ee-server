@@ -4,6 +4,7 @@ import (
 	"github.com/xlab-si/e2ee-server/routers"
 	"github.com/xlab-si/e2ee-server/core/db"
 	"github.com/xlab-si/e2ee-server/controllers"
+	"github.com/xlab-si/e2ee-server/config"
 	"fmt"
 	"github.com/codegangsta/negroni"
 	"github.com/stretchr/testify/assert"
@@ -39,6 +40,7 @@ var accountId2 string
 
 func (s *StorageTestSuite) SetUpSuite(c *C) {
 	os.Setenv("GO_ENV", "tests")
+	config.Init()
 	db.Init()
 
 	router := routers.InitRoutes(false)

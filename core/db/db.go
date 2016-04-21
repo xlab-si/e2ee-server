@@ -12,13 +12,6 @@ import (
 var db *gorm.DB
 
 func Init() {
-	viper.SetConfigName("config") 
-	viper.AddConfigPath("$GOPATH/src/github.com/xlab-si/e2ee-server/")
- 
-	conf_err := viper.ReadInConfig()
-	if conf_err != nil {
-		fmt.Println(conf_err)
-	}
 
 	var conf = viper.GetStringMap("database")
 	var db_type = conf["type"].(string)
