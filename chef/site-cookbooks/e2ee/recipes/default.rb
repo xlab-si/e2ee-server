@@ -18,11 +18,6 @@ execute "Installing E2EE Server" do
 end
 
 # Run tests
-execute "Running unit tests" do
-	cwd "#{e2ee_path}/tests/unit_tests"
-	command "go test"
-end
-
 execute "Running API tests" do
 	cwd "#{e2ee_path}/tests/api_tests"
 	command "go test"
