@@ -9,7 +9,7 @@ go_import_path: github.com/xlab-si/e2ee-server
 install:
   - go get gopkg.in/check.v1
   - go get github.com/stretchr/testify/assert
-  - go get -u -f github.com/mancabizjak/e2ee-server
+  - go get github.com/xlab-si/e2ee-server
 
 services:
   - postgresql  
