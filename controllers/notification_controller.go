@@ -24,7 +24,7 @@ type NotificationsDeleteResponse struct {
 }
 
 func NotificationsGet(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
-	_, _, accountId := ExtractTokenInfo(r)
+	accountId, _ := GetAccountInfo(r)
 
 	messages := db.GetNotifications(accountId)
 	rmessages := []Notification{}
@@ -54,7 +54,7 @@ func NotificationsGet(w http.ResponseWriter, r *http.Request, next http.HandlerF
 }
 
 func NotificationsDelete(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
-	_, _, accountId := ExtractTokenInfo(r)
+	accountId, _ := GetAccountInfo(r)
 
 	db.DBDeleteNotifications(accountId)
 	var m = NotificationsDeleteResponse{

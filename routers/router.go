@@ -4,14 +4,12 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func InitRoutes() *mux.Router {
+func InitRoutes(authenticationRequired bool) *mux.Router {
 	router := mux.NewRouter()
-	router = SetHelloRoutes(router)
-	router = SetVersionCheckRoute(router)
-	router = SetAuthenticationRoutes(router)
-	router = SetAccountRoutes(router)
-	router = SetContainerRoutes(router)
-	router = SetPeerRoutes(router)
-	router = SetNotificationRoutes(router)
+	router = SetVersionCheckRoute(router, authenticationRequired)
+	router = SetAccountRoutes(router, authenticationRequired)
+	router = SetContainerRoutes(router, authenticationRequired)
+	router = SetPeerRoutes(router, authenticationRequired)
+	router = SetNotificationRoutes(router, authenticationRequired)
 	return router
 }

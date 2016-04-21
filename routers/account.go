@@ -7,22 +7,38 @@ import (
 	"github.com/gorilla/mux"
 )
 
-func SetAccountRoutes(router *mux.Router) *mux.Router {
-	router.Handle("/accountexists",
-		negroni.New(
-			negroni.HandlerFunc(authentication.RequireTokenAuthentication),
-			negroni.HandlerFunc(controllers.AccountExists),
-		)).Methods("GET")
-	router.Handle("/account",
-		negroni.New(
-			negroni.HandlerFunc(authentication.RequireTokenAuthentication),
-			negroni.HandlerFunc(controllers.AccountGet),
-		)).Methods("GET")
-	router.Handle("/account",
-		negroni.New(
-			negroni.HandlerFunc(authentication.RequireTokenAuthentication),
-			negroni.HandlerFunc(controllers.AccountCreate),
-		)).Methods("POST")
+func SetAccountRoutes(router *mux.Router, authenticationRequired bool) *mux.Router {
+	if (authenticationRequired) {
+		router.Handle("/accountexists",
+			negroni.New(
+				negroni.HandlerFunc(authentication.RequireTokenAuthentication),
+				negroni.HandlerFunc(controllers.AccountExists),
+			)).Methods("GET")
+		router.Handle("/account",
+			negroni.New(
+				negroni.HandlerFunc(authentication.RequireTokenAuthentication),
+				negroni.HandlerFunc(controllers.AccountGet),
+			)).Methods("GET")
+		router.Handle("/account",
+			negroni.New(
+				negroni.HandlerFunc(authentication.RequireTokenAuthentication),
+				negroni.HandlerFunc(controllers.AccountCreate),
+			)).Methods("POST")
+	} else {
+		router.Handle("/accountexists",
+			negroni.New(
+				negroni.HandlerFunc(controllers.AccountExists),
+			)).Methods("GET")
+		router.Handle("/account",
+			negroni.New(
+				negroni.HandlerFunc(controllers.AccountGet),
+			)).Methods("GET")
+		router.Handle("/account",
+			negroni.New(
+				negroni.HandlerFunc(controllers.AccountCreate),
+			)).Methods("POST")
+
+	}
 
 	return router
 }

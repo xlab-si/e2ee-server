@@ -1,30 +1,23 @@
 package db
 
 import (
-        "golang.org/x/crypto/bcrypt"
         "github.com/jinzhu/gorm"
         _"github.com/jinzhu/gorm/dialects/postgres"
         _"github.com/lib/pq"
-        "github.com/pborman/uuid"
-		"github.com/spf13/viper"
+	"github.com/spf13/viper"
         "fmt"
+	"log"
 )
 
 var db *gorm.DB
 
 func Init() {
-	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte("testing"), 10)
-	user1 := User{
-			Username: "haku",
-			HashedPassword: string(hashedPassword),
-			Uuid:     uuid.New(),
-			Token:     "",
-	}
-	user2 := User{
-			Username: "miha",
-			HashedPassword: string(hashedPassword),
-			Uuid:     uuid.New(),
-			Token:     "",
+	viper.SetConfigName("config") 
+	viper.AddConfigPath("$GOPATH/src/github.com/xlab-si/e2ee-server/")
+ 
+	conf_err := viper.ReadInConfig()
+	if conf_err != nil {
+		fmt.Println(conf_err)
 	}
 
 	var conf = viper.GetStringMap("database")
@@ -40,26 +33,11 @@ func Init() {
 	}
 
 	// for testing:
-	db.DropTable(&User{})
 	db.DropTable(&Account{})
 	db.DropTable(&Container{})
 	db.DropTable(&ContainerRecord{})
 	db.DropTable(&ContainerSessionKeyShare{})
 	db.DropTable(&Message{})
-
-	db.CreateTable(&User{})
-
-	var u = GetUser("haku")
-	if u.Username == "" {
-	//if u == nil {
-			db.Save(&user1)
-	}
-
-	u = GetUser("miha")
-	if u.Username == "" {
-	//if u == nil {
-			db.Save(&user2)
-	}
 
 	db.CreateTable(&Account{})
 	db.CreateTable(&Container{})
@@ -68,20 +46,7 @@ func Init() {
 	db.CreateTable(&Message{})
 }
 
-func AddToken(username string, token string) {
-        var user User
-        db.Where("username = ?", username).Find(&user)
-        user.Token = token
-        db.Save(&user)
-}
-
-func GetUser(name string) User {
-        var user User
-        db.Where("username = ?", name).Find(&user)
-        return user
-}
-
-func FindAccount(accountId uint) Account {
+func FindAccount(accountId string) Account {
         var account Account
         db.Where("account_id = ?", accountId).Find(&account)
         return account
@@ -89,7 +54,10 @@ func FindAccount(accountId uint) Account {
 
 func FindAccountByName(username string) Account {
         var account Account
+	log.Println(username)
+	log.Println(len(username))
         db.Where("username = ?", username).Find(&account)
+	log.Println(account)
         return account
 }
 
@@ -103,7 +71,7 @@ func FindContainer(containerNameHmac string) Container {
         return container
 }
 
-func CreateContainer(accountId uint, containerNameHmac string) uint {
+func CreateContainer(accountId string, containerNameHmac string) uint {
         c := Container {
             AccountId: accountId,
             ContainerNameHmac: containerNameHmac,
@@ -113,7 +81,7 @@ func CreateContainer(accountId uint, containerNameHmac string) uint {
         return c.ID
 }
 
-func GetContainerRecords(containerId uint, accountId uint) []ContainerRecord {
+func GetContainerRecords(containerId uint, accountId string) []ContainerRecord {
         var containerRecords []ContainerRecord
         db.Where("container_id = ?", containerId).Find(&containerRecords)
         share := GetContainerSessionKeyShare(containerId, accountId)
@@ -123,7 +91,7 @@ func GetContainerRecords(containerId uint, accountId uint) []ContainerRecord {
         return containerRecords
 }
 
-func CreateContainerRecord(containerId uint, accountId uint, payloadCiphertext string) {
+func CreateContainerRecord(containerId uint, accountId string, payloadCiphertext string) {
         r := ContainerRecord {
             ContainerId: containerId,
             AccountId: accountId,
@@ -132,7 +100,7 @@ func CreateContainerRecord(containerId uint, accountId uint, payloadCiphertext s
         db.Save(&r)
 }
 
-func CreateContainerSessionKeyShare(containerNameHmac string, sessionKeyCiphertext string, accountId uint, toAccountId uint) {
+func CreateContainerSessionKeyShare(containerNameHmac string, sessionKeyCiphertext string, accountId string, toAccountId string) {
         containerId := FindContainer(containerNameHmac).ID
         s := ContainerSessionKeyShare{
             ContainerId: containerId,
@@ -143,12 +111,12 @@ func CreateContainerSessionKeyShare(containerNameHmac string, sessionKeyCipherte
         db.Save(&s)
 }
 
-func DeleteContainerSessionKeyShare(containerNameHmac string, accountId uint, toAccountId uint) {
+func DeleteContainerSessionKeyShare(containerNameHmac string, accountId string, toAccountId string) {
         containerId := FindContainer(containerNameHmac).ID
         db.Where("container_id = ? and account_id = ? and to_account_id = ?", containerId, accountId, toAccountId).Delete(&ContainerSessionKeyShare{})
 }
 
-func GetContainerSessionKeyShare(containerId uint, accountId uint) ContainerSessionKeyShare {
+func GetContainerSessionKeyShare(containerId uint, accountId string) ContainerSessionKeyShare {
         var share ContainerSessionKeyShare
         db.Where("container_id = ? and to_account_id = ?", containerId, accountId).Find(&share)
         return share
@@ -163,7 +131,7 @@ func DeleteContainer(containerNameHmac string) {
         db.Delete(&container)
 }
 
-func CreateNotification(fromAccountId uint, toAccountId uint, headersCiphertext string, payloadCiphertext string) uint {
+func CreateNotification(fromAccountId string, toAccountId string, headersCiphertext string, payloadCiphertext string) uint {
         m := Message {
             FromAccountId: fromAccountId,
             ToAccountId: toAccountId,
@@ -174,12 +142,12 @@ func CreateNotification(fromAccountId uint, toAccountId uint, headersCiphertext 
         return m.ID
 }
 
-func GetNotifications(accountId uint) []Message {
+func GetNotifications(accountId string) []Message {
         var messages []Message
         db.Where("to_account_id = ?", accountId).Find(&messages)
         return messages
 }
 
-func DBDeleteNotifications(accountId uint) {
+func DBDeleteNotifications(accountId string) {
         db.Where("to_account_id = ?", accountId).Delete(Message{})
 }

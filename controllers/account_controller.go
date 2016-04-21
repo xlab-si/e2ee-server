@@ -27,11 +27,11 @@ type AccountExistsResponse struct {
 }
 
 func AccountExists(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
-	_, _, accountId := ExtractTokenInfo(r)
+	accountId, _ := GetAccountInfo(r)
 	account := db.FindAccount(accountId)
 	
 	exists := false
-	if account.AccountId != 0 {
+	if account.AccountId != "" {
 		exists = true
 	}
 
@@ -47,8 +47,7 @@ func AccountExists(w http.ResponseWriter, r *http.Request, next http.HandlerFunc
 }
 
 func AccountGet(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
-	_, _, accountId := ExtractTokenInfo(r)
-
+	accountId, _ := GetAccountInfo(r)
 	account := db.FindAccount(accountId)
 	
 	var m = AccountResponseMessage{
@@ -56,7 +55,7 @@ func AccountGet(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
     	    Account: account,
 	}
 
-	if account.AccountId != 0 {
+	if account.AccountId != "" {
 		w.Header().Set("Content-Type", "application/json; charset=UTF-8")
 		w.WriteHeader(http.StatusOK)
 		if err := json.NewEncoder(w).Encode(m); err != nil {
@@ -78,7 +77,7 @@ func AccountGet(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 }
 
 func AccountCreate(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
-	_, username, accountId := ExtractTokenInfo(r)
+	accountId, username := GetAccountInfo(r)
 
 	var account db.Account
 	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
