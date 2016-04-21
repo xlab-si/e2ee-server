@@ -25,6 +25,6 @@ func main() {
 	n := negroni.Classic()
 	n.Use(c)
 	n.UseHandler(router)
-	
+
 	http.ListenAndServe(":8080", n)
 }
