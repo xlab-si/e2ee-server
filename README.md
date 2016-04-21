@@ -3,14 +3,21 @@
 
 This is a server for storage of encrypted files. It provides REST API for user accounts, data storage, and sharing information between users. The client is available at https://github.com/xlab-si/e2ee-client.
 
-*NOTE*: E2EE server is a work in progress. There are issues to be fixed, for example database scheme, switching to HTTPS, and authentication (currently, the tokens are used and are issued by the server itself). 
+*NOTE*: E2EE server is a work in progress. There are issues to be fixed, for example database scheme and authentication (currently, the tokens are used and are issued by the server itself). 
 
-### 1. Prerequisites
+## Installation
+You can install E2EE server manually, or via Chef.
+
+### Chef installation
+See instructions in the _chef_ directory.
+
+### Manual installation
+#### 1. Prerequisites
 In order to get E2EE server up and running, you will need the following:
 * golang
 * postgresql
 
-#### Golang
+##### Golang
 Install Golang and setup the GOPATH environment variable, for instance:
 ```sh
 $ mkdir ~/goworkspace
@@ -21,15 +28,17 @@ You can then fetch this repository and all its dependencies by running
 ```sh
 $ go get github.com/xlab-si/e2ee-server
 ```
-#### Postgresql
-Install PostgreSQL and create database e2ee:
+##### Postgresql
+Install PostgreSQL and create a new database, for instance :
 `CREATE DATABASE e2ee;`. Depending on what OS distribution you are running, you might also have to run `ALTER USER postgres PASSWORD 'postgres';`. For details, see db/db.go
 
-### 2. Configure E2EE server
+#### 2. Configure E2EE server
 
-The configuration is placed in config.json.
+All configuration is placed in config.json.
 
-### 3. Compile, test and run
+***IMPORTANT*** E2EE server uses HTTPS. For convenience, we included server's initial private key and self-signed certificate in the _config/ssl/_ folder. However, **you should never use these in your setup! Always be sure to change config in order to point to your own certificate and key!**
+
+#### 3. Compile, test and run
 Navigate to your $GOPATH/src/github.com/xlab-si/e2ee-server directory and run
 ```sh
 $ go install
@@ -40,8 +49,8 @@ $ export PATH=$PATH:$GOPATH/bin
 ```
 and you will be able to run E2EE server from arbitrary location with `./e2ee-server`.
 
-#### Running tests
-Before starting E2EE server, it is advisable to run tests to check whether everything is working properly. Navigate to the tests/ directory and from both subdirectories (api_tests/ and unit_tests/) run
+##### Running tests
+Before starting E2EE server, it is advisable to run tests to check whether everything is working properly. Navigate to the tests/ directory and from the api_tests/ directory run
 ```sh
 $ go test
 ```
