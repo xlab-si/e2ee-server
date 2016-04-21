@@ -1,7 +1,7 @@
 package db
 
 import (
-	"github.com/jinzhu/gorm"
+	//"github.com/jinzhu/gorm"
 )
 
 type Accounts []Account
@@ -9,14 +9,6 @@ type Accounts []Account
 type UserCredentials struct {
     Username string `json:"username"`
     Password string `json:"password"`
-}
-
-type User struct {
-        gorm.Model
-        Username             string
-        HashedPassword       string
-        Uuid                 string
-        Token                string `sql:"size:600"`
 }
 
 type Account struct {
@@ -32,7 +24,7 @@ type Account struct {
 	SignKeyPrivateMacSalt string      `json:"signKeyPrivateMacSalt" sql:"type:text"`
 	SignKeyPub string      `json:"signKeyPub" sql:"type:text"`
 	Username string      `json:"username"`
-	AccountId uint      `json:"accountId"` // ID of user
+	AccountId string      `json:"accountId"` // sub field of Google token
 }
 
 

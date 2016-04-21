@@ -1,12 +1,9 @@
 package api_tests
 
 import (
-	"github.com/xlab-si/e2ee-server/core/authentication"
 	"github.com/xlab-si/e2ee-server/routers"
-	"github.com/xlab-si/e2ee-server/settings"
 	"github.com/xlab-si/e2ee-server/core/db"
 	"github.com/xlab-si/e2ee-server/controllers"
-	"github.com/xlab-si/e2ee-server/api/parameters"
 	"fmt"
 	"github.com/codegangsta/negroni"
 	"github.com/stretchr/testify/assert"
@@ -14,19 +11,15 @@ import (
 	"net/http"
 	"net/http/httptest"
 	"encoding/json"
-	"github.com/pborman/uuid"
 	"os"
 	"bytes"
-	"golang.org/x/crypto/bcrypt"
-	"github.com/jinzhu/gorm"
 	"testing"
-	"log"
 )
 
 func Test1(t1 *testing.T) {
 	// TestingT should be called only once and it is called
 	// already in auth_middleware_test
-	//TestingT(t1) 
+	TestingT(t1) 
 }
 
 type StorageTestSuite struct{}
@@ -35,65 +28,33 @@ var _ = Suite(&StorageTestSuite{})
 var t1 *testing.T
 var token1 string
 var token2 string
-var token3 string
 var user1 string
 var user2 string
 var server1 *negroni.Negroni
 var containerNameHmac string
 var ciphertext string
 var payloadciphertext string
+var accountId1 string
+var accountId2 string
 
 func (s *StorageTestSuite) SetUpSuite(c *C) {
 	os.Setenv("GO_ENV", "tests")
-	settings.Init()
 	db.Init()
 
-	authBackend := authentication.InitJWTAuthenticationBackend()
-	assert.NotNil(t, authBackend)
-	router := routers.InitRoutes()
+	router := routers.InitRoutes(false)
 	server1 = negroni.Classic()
 	server1.UseHandler(router)
 
 	containerNameHmac = "hmacfoo"
 	ciphertext = "ciphertext"
 	payloadciphertext = "payloadciphertext"
-
-	userUUID := uuid.New()
-        accountId := uint(1234123)
-        token1, _ = authBackend.GenerateToken(userUUID, "testUser", accountId)
-
 	user1 = "foo"
-	pass := "foobar"
-	hashedPassword, _ := bcrypt.GenerateFromPassword([]byte(pass), 10)
-	user := db.User{
-                Username: user1,
-                HashedPassword: string(hashedPassword),
-                Uuid:     uuid.New(),
-                Token:     "",
-        }
+	accountId1 = "fooid"
+	token1 = "thisistesttoken " + user1 + " " + accountId1
 
-	dbP, err := gorm.Open("postgres", "host=localhost password=postgres dbname=e2ee user=postgres sslmode=disable")
-        if err != nil {
-                log.Fatal(err)
-        }
-	u := db.GetUser(user1)
-	if u.Username == "" {
-		dbP.Save(&user)
-	}
-	credentials := db.UserCredentials{
-                Username: user1,
-                Password: pass,
-        }
-	jsonStr, _ := json.Marshal(credentials)
-
-	resource := "/token-auth"
-	response := httptest.NewRecorder()
-	request, _ := http.NewRequest("POST", resource, bytes.NewBuffer(jsonStr))
-
-	server1.ServeHTTP(response, request)
-	var token parameters.TokenAuthentication
-	_ = json.Unmarshal(response.Body.Bytes(), &token)
-	token2 = token.Token
+	user2 = "goo"
+	accountId2 = "gooid"
+	token2 = "thisistesttoken " + user2 + " " + accountId2
 
 	var account = db.Account{
 		ContainerNameHmacKeyCiphertext: "",
@@ -107,45 +68,17 @@ func (s *StorageTestSuite) SetUpSuite(c *C) {
         	SignKeyPrivateMac: "",
         	SignKeyPrivateMacSalt: "",
         	SignKeyPub: "",
-        	//Username: "blafoo", // retrieved from token
+        	//Username: "foo", // retrieved from token
+        	//AccountId: "fooid", // retrieved from token
 	}
-	resource = "/account"
-	response = httptest.NewRecorder()
+	resource := "/account"
+	response := httptest.NewRecorder()
 
-	jsonStr, _ = json.Marshal(account)
+	jsonStr, _ := json.Marshal(account)
 
-	request, _ = http.NewRequest("POST", resource, bytes.NewBuffer(jsonStr) )
+	request, _ := http.NewRequest("POST", resource, bytes.NewBuffer(jsonStr) )
 	request.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token2))
 	server1.ServeHTTP(response, request)
-
-	// another user (for sharing):
-	user2 = "bar"
-	pass = "foobar"
-	hashedPassword, _ = bcrypt.GenerateFromPassword([]byte(pass), 10)
-	user = db.User{
-                Username: user2,
-                HashedPassword: string(hashedPassword),
-                Uuid:     uuid.New(),
-                Token:     "",
-        }
-
-	u = db.GetUser(user2)
-	if u.Username == "" {
-		dbP.Save(&user)
-	}
-	credentials = db.UserCredentials{
-                Username: user2,
-                Password: pass,
-        }
-	jsonStr, _ = json.Marshal(credentials)
-
-	resource = "/token-auth"
-	response = httptest.NewRecorder()
-	request, _ = http.NewRequest("POST", resource, bytes.NewBuffer(jsonStr))
-
-	server1.ServeHTTP(response, request)
-	_ = json.Unmarshal(response.Body.Bytes(), &token)
-	token3 = token.Token
 
 	account = db.Account{
 		ContainerNameHmacKeyCiphertext: "",
@@ -159,17 +92,21 @@ func (s *StorageTestSuite) SetUpSuite(c *C) {
         	SignKeyPrivateMac: "",
         	SignKeyPrivateMacSalt: "",
         	SignKeyPub: "",
-        	//Username: "blafoo", // retrieved from token
+        	//Username: "foo", // retrieved from token
+        	//AccountId: "fooid", // retrieved from token
 	}
 	resource = "/account"
 	response = httptest.NewRecorder()
 
-	jsonStr, _ = json.Marshal(account)
+	//jsonStr, _ = json.Marshal(account)
 
-	request, _ = http.NewRequest("POST", resource, bytes.NewBuffer(jsonStr) )
-	request.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token3))
-	server1.ServeHTTP(response, request)
+	// TODO: tests are to be fixed, now token1 can share files of token2, but
+	// this is due to the fact that this are fake tokens and some hecks were
+	// needed to enable tests
 
+	//request, _ = http.NewRequest("POST", resource, bytes.NewBuffer(jsonStr) )
+	//request.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token3))
+	//server1.ServeHTTP(response, request)
 }
 
 func (s *StorageTestSuite) SetUpTest(c *C) {
@@ -177,8 +114,6 @@ func (s *StorageTestSuite) SetUpTest(c *C) {
 }
 
 func (s *StorageTestSuite) TestAccountNotExists(c *C) {
-	// token was generated for testUser (see SetUpTest, token1), but
-	// no account was generated and stored
 	resource := "/accountexists"
 	response := httptest.NewRecorder()
 	request, _ := http.NewRequest("GET", resource, nil)
@@ -191,8 +126,6 @@ func (s *StorageTestSuite) TestAccountNotExists(c *C) {
 }
 
 func (s *StorageTestSuite) TestAccountExists(c *C) {
-	// token was generated for foofoo (see SetUpTest, token2) and
-	// account was generated and stored (TestSaveAccount)
 	resource := "/accountexists"
 	response := httptest.NewRecorder()
 	request, _ := http.NewRequest("GET", resource, nil)
@@ -220,7 +153,7 @@ func (s *StorageTestSuite) TestContainerCreate(c *C) {
 	resource := "/container/" + containerNameHmac
 
 	var chunk = controllers.ContainerCreateChunk{
-		ToAccountId: 0,
+		ToAccountId: accountId1,
 		SessionKeyCiphertext: "",
 	}
 
@@ -280,7 +213,7 @@ func (s *StorageTestSuite) TestContainerShare(c *C) {
 	response := httptest.NewRecorder()
 	request, _ := http.NewRequest("GET", resource, nil)
 
-	request.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token2))
+	request.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token1))
 	server1.ServeHTTP(response, request)
 	var res controllers.PeerMessage
 	_ = json.Unmarshal(response.Body.Bytes(), &res)
@@ -298,7 +231,7 @@ func (s *StorageTestSuite) TestContainerShare(c *C) {
 	jsonStr, _ := json.Marshal(chunk)
 	request, _ = http.NewRequest("POST", resource, bytes.NewBuffer(jsonStr) )
 
-	request.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token2))
+	request.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token1))
 	server1.ServeHTTP(response, request)
 	var shareRes controllers.ContainerResponseMessage
 	_ = json.Unmarshal(response.Body.Bytes(), &shareRes)
@@ -316,12 +249,11 @@ func (s *StorageTestSuite) TestContainerShare(c *C) {
 	jsonStr, _ = json.Marshal(chunk1)
 	request, _ = http.NewRequest("POST", resource, bytes.NewBuffer(jsonStr) )
 
-	request.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token2))
+	request.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token1))
 	server1.ServeHTTP(response, request)
 	var notificationRes controllers.NotificationResponse
 	_ = json.Unmarshal(response.Body.Bytes(), &notificationRes)
 	assert.Equal(t1, notificationRes.Success, true)
-
 }
 
 func (s *StorageTestSuite) TestContainerSzGetMessages(c *C) {
@@ -331,7 +263,7 @@ func (s *StorageTestSuite) TestContainerSzGetMessages(c *C) {
 	response := httptest.NewRecorder()
 	request, _ := http.NewRequest("GET", resource, nil)
 
-	request.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token3))
+	request.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token2))
 	server1.ServeHTTP(response, request)
 	var res controllers.NotificationsPacket
 	_ = json.Unmarshal(response.Body.Bytes(), &res)
@@ -342,7 +274,7 @@ func (s *StorageTestSuite) TestContainerSzGetMessages(c *C) {
 	response = httptest.NewRecorder()
 	request, _ = http.NewRequest("DELETE", resource, nil)
 
-	request.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token3))
+	request.Header.Set("Authorization", fmt.Sprintf("Bearer %v", token2))
 	server1.ServeHTTP(response, request)
 	var deleteRes controllers.NotificationsDeleteResponse
 	_ = json.Unmarshal(response.Body.Bytes(), &deleteRes)

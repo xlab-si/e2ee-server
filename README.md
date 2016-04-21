@@ -1,5 +1,5 @@
 # End-to-End Encryption (E2EE) server
-[![Build Status](https://travis-ci.org/mancabizjak/e2ee-server.svg?branch=master)](https://travis-ci.org/mancabizjak/e2ee-server)
+[![Build Status](https://travis-ci.org/xlab-si/e2ee-server.svg?branch=master)](https://travis-ci.org/xlab-si/e2ee-server)
 
 This is a server for storage of encrypted files. It provides REST API for user accounts, data storage, and sharing information between users. The client is available at https://github.com/xlab-si/e2ee-client.
 
@@ -8,7 +8,6 @@ This is a server for storage of encrypted files. It provides REST API for user a
 ### 1. Prerequisites
 In order to get E2EE server up and running, you will need the following:
 * golang
-* redis
 * postgresql
 
 #### Golang
@@ -22,19 +21,13 @@ You can then fetch this repository and all its dependencies by running
 ```sh
 $ go get github.com/xlab-si/e2ee-server
 ```
-#### Redis
-Redis is used for storing expired tokens, the password needs to be changed and set (see core/redis/redis_cli.go):
-`CONFIG SET requirepass "some_password"`
-
 #### Postgresql
 Install PostgreSQL and create database e2ee:
 `CREATE DATABASE e2ee;`. Depending on what OS distribution you are running, you might also have to run `ALTER USER postgres PASSWORD 'postgres';`. For details, see db/db.go
 
 ### 2. Configure E2EE server
-All configuration is placed in a single _.json_ file (see _config/config.json_). You can configure backend database, redis and environments. Alternatively, all environment-specific configuration (paths to private and public keys, JWT expiration delta) can be set through environment variables of form ENV_env_PRIV (path to private key), ENV_env_PUB (path to public key) and ENV_env_JWT (integer value), where _env_ can be any of TESTS, PREPRODUCTION or PRODUCTION.
 
-By default, server's public and private key are stored in the _settings/keys/_ subfolder. You should generate a new RSA keypair for your server and update  _config.json_ to point to the locations where private and public keys are stored.
-
+The configuration is placed in config.json.
 
 ### 3. Compile, test and run
 Navigate to your $GOPATH/src/github.com/xlab-si/e2ee-server directory and run
@@ -53,44 +46,9 @@ Before starting E2EE server, it is advisable to run tests to check whether every
 $ go test
 ```
 
-[e2ee-client]: <https://github.com/xlab-si/e2ee-client>
-
 ## API
 
 E2EE server exposes a REST API which is used by E2EE client. The API has to be accessed over HTTPS. All data is sent and received as JSON. The API comprises the following functions:
-
-### Authentication
-
-**POST /token-auth**
-
-Request:
-
-```
-{ 
-	username: "miha",
-	password: "some password"
-}
-```
-
-Response:
-
-```
-{ 
-	token:"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOjEsImV4cCI6MTQ1OTQ5MzczMywiaWF0IjoxNDU5MjM0NTMzLCJuYW1lIjoiaGFrdSIsInN1YiI6IjAzOTMyMjE3LWI1NWYtNGYyMy04NDQwLTIyN2UyNDFhNmRmMCJ9.mgSqigVNC7UYzFD8l1duJTsJTUQGhoIKOZ7yZ80piTXrhrn-H_IsOMB4_LBOKl_5AMFu9kbgnVxEF8bwekwzcaVs4IkCr0_HczfhxE9mW5tXDdNyWBh5UyXh_KwUbKWyWxaQY_MrWUkgxvldwatzmqkOOO2GQ-Tb7NNwulpkTJucwNOT0CB5q5yNxN0bAb5bZhd7tUVQ85pr5n0DU3apOMLbM1ItoXUT4dDr_pqQxMEsyvYtjdL0xEi4kvS5gQUfYjjU9SURfNLk5VG9du1Et6X2MqxVnh8yLdimXQNW2pEWkLuTNEAIJpSFEUH0qen2UGxIaqy0ksXfpbipxCYAQw"
-}
-```
-
-**GET /refresh-token-auth**
-
-Response:
-
-```
-{ 
-	token:"eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJhY2NvdW50SWQiOjIsImV4cCI6MTQ1OTQ5Mzk5MiwiaWF0IjoxNDU5MjM0NzkyLCJuYW1lIjoibWloYSIsInN1YiI6ImE3MjdhZDFjLWRhNjgtNGFjNi04ZDQ3LTllNTQ2N2ZlN2ZjZiJ9.1E6eeTVs72ZgxgicTlDIg1_90bCbqZyQIWBEPN5kOAT3-_Q8y9WuExypPyMdRSFaeUqtSeXWba5jeuUvUTnRuURG3qiPsB4mF_f9sv0HlWeaW9HJj8qLYX2IG6ILQLd87R61jiAtvfB_6ndOCb1ADmsWwUoXB1xbRyMnXytIUAL3xL2cIGFCACrQi27O13QLNkP6Mh1Kq9PMModI2rOB6xDccuO976ymVLKEKwgCNwBvsBAH2F8rPoTI7hJ80hdQ0lJHKJLBeJBHVDuDJ1BPT_NCrDr5q_WVoprpyB_nszxQyYkaX6SV-NUVRJsYJ6m9JgPasYMZ_92gefe1KPZDfQ"
-}
-```
-
-**GET /logout**
 
 ### Account
 
