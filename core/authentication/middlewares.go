@@ -28,6 +28,7 @@ func RequireTokenAuthentication(rw http.ResponseWriter, req *http.Request, next 
    	 } else {
         	defer response.Body.Close()
         	contents, err := ioutil.ReadAll(response.Body)
+		//fmt.Println(string(contents))
         	if err != nil {
             		fmt.Printf("%s", err)
             		os.Exit(1)
