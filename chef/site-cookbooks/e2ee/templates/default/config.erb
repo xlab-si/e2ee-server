@@ -1,35 +1,16 @@
 {
+	"https": {
+		"port": "<%= @https_port %>",
+		"path": "<%= @https_cert_path %>",
+		"key": "<%= @https_cert_prefix %>.key",
+		"cert": "<%= @https_cert_prefix %>.crt"
+	},
     "database": {
         "ip": "<%= @db_host %>",
         "type": "postgres",
         "name": "e2ee",
         "user": "postgres",
         "password": "<%= @db_pw %>"
-    },
-
-    "redis": {
-		"mode" : "tcp",
-		"port" : 6379,
-		"password" : "<%= @redis_pw %>"
-    },
-
-    "environments" : {
-		"preproduction" : {
-			"PrivateKeyPath" : "<%= @private_key_path %>",
-			"PublicKeyPath" : "<%= @public_key_path %>",
-			"JWTExpirationDelta" : 72
-		},
-		"production" : {
-			"PrivateKeyPath" : "<%= @private_key_path %>",
-			"PublicKeyPath" : "<%= @public_key_path %>",
-			"JWTExpirationDelta" : 72
-		},
-		"tests" : {
-			"PrivateKeyPath" : "<%= @private_key_path %>",
-			"PublicKeyPath" : "<%= @public_key_path %>",
-			"JWTExpirationDelta" : 72
-		}
-    }	
-
+    }
 }
 

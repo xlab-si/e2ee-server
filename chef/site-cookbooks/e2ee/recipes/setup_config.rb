@@ -15,10 +15,10 @@ e2ee_path = "#{gopath}/src/github.com/xlab-si/e2ee-server"
 template "#{e2ee_path}/config/config.json" do
   source 'config.erb'
   variables ({
-	:private_key_path => "#{node['e2ee']['private_key']}",
-    :public_key_path => "#{node['e2ee']['public_key']}",
-    :redis_pw => "#{node['redisio']['default_settings']['requirepass']}",
 	:db_host => "#{node['postgresql']['config']['listen_addresses']}",
-	:db_pw => "#{node['postgresql']['password']['postgres']}"
+	:db_pw => "#{node['postgresql']['password']['postgres']}",
+	:https_port => "#{node['e2ee']['https']['port']}",
+	:https_cert_path => "#{node['e2ee']['https']['cert_path']}",
+	:https_cert_prefix => "#{node['e2ee']['https']['cert_name']}"
   })
 end

@@ -1,6 +1,12 @@
 {
-    "database": {
-        "ip": "172.17.0.2",
+    "https": {
+		"port": "4443",
+		"path": "/home/vagrant/goworkspace/src/github.com/xlab-si/e2ee-server/config/ssl",
+		"key": "server.key",
+		"cert": "server.crt"
+	},
+	"database": {
+        "ip": "127.0.0.1", 
         "type": "postgres",
         "name": "e2ee",
         "user": "postgres",

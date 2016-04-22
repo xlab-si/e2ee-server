@@ -4,11 +4,6 @@
   "json_class": "Chef::Role",
   
   "default_attributes": {
-	"redisio" : {
-		"default_settings" : {
-			"requirepass" : "some_password"
-		}
-	},
 	
 	"postgresql": {
 		"password": {
@@ -31,9 +26,12 @@
 	},
 	
 	"e2ee" : {
-		"private_key" : "/home/vagrant/goworkspace/src/github.com/xlab-si/e2ee-server/settings/keys/server.pem",
-		"public_key" : "/home/vagrant/goworkspace/src/github.com/xlab-si/e2ee-server/settings/keys/server.pub",
-		"log_file" : "/home/vagrant/e2ee-server.log"
+		"log_file" : "/home/vagrant/e2ee-server.log",
+		"https" : {
+			"cert_path" : "/etc/ssl/certs",
+			"cert_name" : "e2ee-server",
+			"port" : 4443
+		}
 	}
   },
   
@@ -41,12 +39,10 @@
   
   "run_list": [
     "recipe[apt]",
-   	"recipe[redisio]",
-	"recipe[redisio::enable]",
 	"recipe[golang]",
 	"recipe[golang::packages]",
 	"recipe[e2ee::database]",
-	"recipe[e2ee::setup_keys]",
+	"recipe[e2ee::setup_ssl_cert]",
 	"recipe[e2ee::setup_config]",
 	"recipe[e2ee]"
   ]

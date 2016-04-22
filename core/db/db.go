@@ -12,17 +12,10 @@ import (
 var db *gorm.DB
 
 func Init() {
-	viper.SetConfigName("config") 
-	viper.AddConfigPath("$GOPATH/src/github.com/xlab-si/e2ee-server/")
- 
-	conf_err := viper.ReadInConfig()
-	if conf_err != nil {
-		fmt.Println(conf_err)
-	}
 
-	var conf = viper.GetStringMap("database")
-	var db_type = conf["type"].(string)
-	var conn_str = fmt.Sprintf("host=%s dbname=%s user=%s password=%s sslmode=disable",
+	conf := viper.GetStringMap("database")
+	db_type := conf["type"].(string)
+	conn_str := fmt.Sprintf("host=%s dbname=%s user=%s password=%s sslmode=disable",
 								conf["ip"], conf["name"], conf["user"], conf["password"])
 	//log.Println(conn_str)
 		
