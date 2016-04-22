@@ -34,7 +34,7 @@ func GetAccountInfo(r *http.Request) (string, string) {
                         fmt.Printf("%s", err)
                         os.Exit(1)
                 }
-                fmt.Printf("%s\n", string(contents))
+                //fmt.Printf("%s\n", string(contents))
 
 		j, err1 := gabs.ParseJSON([]byte(string(contents)))
 		if err1 != nil {
