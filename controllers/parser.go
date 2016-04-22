@@ -41,9 +41,8 @@ func GetAccountInfo(r *http.Request) (string, string) {
 			fmt.Println(err1)
 		}
 		id := j.Path("sub").Data().(string)
-		name := j.Path("given_name").Data().(string)
-		surname := j.Path("family_name").Data().(string)
-		return id, name + " " + surname
+		email := j.Path("email").Data().(string)
+		return id, email
 	}
 	return "", ""
 }
