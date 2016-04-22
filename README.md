@@ -3,7 +3,7 @@
 
 This is a server for storage of encrypted files. It provides REST API for user accounts, data storage, and sharing information between users. The client is available at https://github.com/xlab-si/e2ee-client.
 
-*NOTE*: E2EE server is a work in progress. There are issues to be fixed, for example database scheme and authentication (currently, the tokens are used and are issued by the server itself). 
+*NOTE*: E2EE server is a work in progress. There are issues to be fixed, for example database scheme.
 
 ## Installation
 You can install E2EE server manually, or via Chef.
@@ -37,6 +37,8 @@ Install PostgreSQL and create a new database, for instance :
 All configuration is placed in config.json.
 
 ***IMPORTANT*** E2EE server uses HTTPS. For convenience, we included server's initial private key and self-signed certificate in the _config/ssl/_ folder. However, **you should never use these in your setup! Always be sure to change config in order to point to your own certificate and key!**
+
+If you use a self signed certificate, you will need to resolve the privacy error before using E2EE client - go to the E2EE server address in browser and resolve the notification about non trusted certificate).
 
 #### 3. Compile, test and run
 Navigate to your $GOPATH/src/github.com/xlab-si/e2ee-server directory and run
