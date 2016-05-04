@@ -7,6 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
+	log "github.com/Sirupsen/logrus"
 
 	//"github.com/gorilla/mux"
 	//"log"
@@ -14,30 +15,30 @@ import (
 )
 
 type ContainerResponseMessage struct {
-    Success bool `json:"success"`
-    Error string `json:"error"`
-    Records []db.ContainerRecord `json:"records"`
+    	Success bool `json:"success"`
+    	Error string `json:"error"`
+    	Records []db.ContainerRecord `json:"records"`
 }
 
 type ContainerCreateChunk struct {
-    ToAccountId string `json:"toAccountId"`
-    SessionKeyCiphertext string `json:"sessionKeyCiphertext"`
+    	ToAccountId string `json:"toAccountId"`
+    	SessionKeyCiphertext string `json:"sessionKeyCiphertext"`
 }
 
 type RecordCreateChunk struct {
-    ContainerNameHmac string `json:"containerNameHmac"`
-    PayloadCiphertext string `json:"payloadCiphertext"`
+    	ContainerNameHmac string `json:"containerNameHmac"`
+    	PayloadCiphertext string `json:"payloadCiphertext"`
 }
 
 type ContainerShareChunk struct {
-    ContainerNameHmac string `json:"containerNameHmac"`
-    ToAccountId string `json:"toAccountId"`
-    SessionKeyCiphertext string `json:"sessionKeyCiphertext"`
+    	ContainerNameHmac string `json:"containerNameHmac"`
+    	ToAccountId string `json:"toAccountId"`
+    	SessionKeyCiphertext string `json:"sessionKeyCiphertext"`
 }
 
 type ContainerUnshareChunk struct {
-    ContainerNameHmac string `json:"containerNameHmac"`
-    ToAccountId string `json:"toAccountId"`
+    	ContainerNameHmac string `json:"containerNameHmac"`
+    	ToAccountId string `json:"toAccountId"`
 }
 
 func ContainerGet(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
@@ -51,10 +52,10 @@ func ContainerGet(w http.ResponseWriter, r *http.Request, next http.HandlerFunc)
 	var success bool
 	success = true
  	if container == (db.Container{}) {
-	    err1 = "container does not exist"	
-	    success = false
+	    	err1 = "container does not exist"	
+	    	success = false
 	} 
-
+	
 	records := db.GetContainerRecords(container.ID, accountId)
 	
 	var m = ContainerResponseMessage{
@@ -91,6 +92,10 @@ func ContainerCreate(w http.ResponseWriter, r *http.Request, next http.HandlerFu
         if err := json.Unmarshal(body, &chunk); err != nil {
                 w.Header().Set("Content-Type", "application/json; charset=UTF-8")
                 w.WriteHeader(422) // unprocessable entity
+		log.WithFields(log.Fields{
+                	"accountId": accountId,
+                	"containerNameHmac": containerNameHmac,
+        	}).Error("Unprocessable entity when trying to create a container")
                 if err := json.NewEncoder(w).Encode(err); err != nil {
                         panic(err)
                 }
@@ -101,7 +106,6 @@ func ContainerCreate(w http.ResponseWriter, r *http.Request, next http.HandlerFu
 	sessionKeyCiphertext = chunk.SessionKeyCiphertext
 
 	db.CreateContainer(accountId, containerNameHmac)
-	//log.Println("Container created: " + strconv.Itoa(containerId))
 	db.CreateContainerSessionKeyShare(containerNameHmac, sessionKeyCiphertext, accountId, accountId)
 	
 	var m = ContainerResponseMessage{
@@ -143,10 +147,6 @@ func ContainerRecordCreate(w http.ResponseWriter, r *http.Request, next http.Han
  	// applied here, perhaps some large value might be applied?
         body, err := ioutil.ReadAll(r.Body)
 
-	//jsonParsed, err2 := gabs.ParseJSON([]byte(body))
-        //log.Println(err2)
-        //log.Println(jsonParsed)
-
         if err != nil {
                 panic(err)
         }
@@ -156,6 +156,10 @@ func ContainerRecordCreate(w http.ResponseWriter, r *http.Request, next http.Han
         if err := json.Unmarshal(body, &chunk); err != nil {
                 w.Header().Set("Content-Type", "application/json; charset=UTF-8")
                 w.WriteHeader(422) // unprocessable entity
+		log.WithFields(log.Fields{
+                	"accountId": accountId,
+        	}).Error("Unprocessable entity when trying to create a container record")
+
                 if err := json.NewEncoder(w).Encode(err); err != nil {
                         panic(err)
                 }
@@ -203,6 +207,9 @@ func ContainerShare(w http.ResponseWriter, r *http.Request, next http.HandlerFun
         if err := json.Unmarshal(body, &chunk); err != nil {
                 w.Header().Set("Content-Type", "application/json; charset=UTF-8")
                 w.WriteHeader(422) // unprocessable entity
+		log.WithFields(log.Fields{
+                	"accountId": accountId,
+        	}).Error("Unprocessable entity when trying to share a container")
                 if err := json.NewEncoder(w).Encode(err); err != nil {
                         panic(err)
                 }

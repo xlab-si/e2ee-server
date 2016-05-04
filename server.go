@@ -1,6 +1,7 @@
 package main
 
 import (
+	"os"
 	"github.com/codegangsta/negroni"
 	"github.com/rs/cors"
 	"github.com/spf13/viper"
@@ -9,9 +10,20 @@ import (
 	"github.com/xlab-si/e2ee-server/routers"
 	"net/http"
 	"fmt"
+	log "github.com/Sirupsen/logrus"
 )
 
 func main() {
+	log.SetFormatter(&log.JSONFormatter{})
+        //log.SetFormatter(&log.TextFormatter) // default
+        log.SetLevel(log.DebugLevel)
+
+        f, err1 := os.OpenFile("e2ee-logs", os.O_WRONLY | os.O_CREATE, 0755)
+        if err1 != nil {
+                //handle
+        }
+        log.SetOutput(f)
+
 	c := cors.New(cors.Options{
 		AllowedOrigins:   []string{"*"},
 		AllowedMethods:   []string{"GET", "POST", "PUT", "DELETE"},
@@ -34,5 +46,5 @@ func main() {
 	cert := fmt.Sprintf("%s/%s", http_conf["path"], http_conf["cert"])
 	
 	err := http.ListenAndServeTLS(port, cert, key, n)
-	fmt.Println(err)
+	log.Error(err)
 }
