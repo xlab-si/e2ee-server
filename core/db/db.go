@@ -6,23 +6,21 @@ import (
         _"github.com/lib/pq"
 	"github.com/spf13/viper"
         "fmt"
-	"log"
+	log "github.com/Sirupsen/logrus"
 )
 
 var db *gorm.DB
 
 func Init() {
-
 	conf := viper.GetStringMap("database")
 	db_type := conf["type"].(string)
 	conn_str := fmt.Sprintf("host=%s dbname=%s user=%s password=%s sslmode=disable",
 								conf["ip"], conf["name"], conf["user"], conf["password"])
-	//log.Println(conn_str)
-		
+
 	var err error
 	db, err = gorm.Open(db_type, conn_str)
 	if err != nil {
-			panic(err)
+		panic(err)
 	}
 
 	// for testing:
@@ -47,15 +45,16 @@ func FindAccount(accountId string) Account {
 
 func FindAccountByName(username string) Account {
         var account Account
-	log.Println(username)
-	log.Println(len(username))
         db.Where("username = ?", username).Find(&account)
-	log.Println(account)
         return account
 }
 
 func StoreAccount(a Account) {
         db.Save(a)
+	log.WithFields(log.Fields{
+    		"accountId": a.AccountId,
+    		"username": a.Username,
+  	}).Info("Account stored")	
 }
 
 func FindContainer(containerNameHmac string) Container {
@@ -71,6 +70,10 @@ func CreateContainer(accountId string, containerNameHmac string) uint {
             LatestRecordId: 0, // todo
         }
         db.Save(&c)
+	log.WithFields(log.Fields{
+    		"accountId": accountId,
+    		"containerNameHmac": containerNameHmac,
+  	}).Info("Container created")	
         return c.ID
 }
 
@@ -102,6 +105,11 @@ func CreateContainerSessionKeyShare(containerNameHmac string, sessionKeyCipherte
             SessionKeyCiphertext: sessionKeyCiphertext,
         }
         db.Save(&s)
+	log.WithFields(log.Fields{
+		"accountId": accountId,
+		"toAccountId": toAccountId,
+    		"containerNameHmac": containerNameHmac,
+  	}).Info("Container shared")
 }
 
 func DeleteContainerSessionKeyShare(containerNameHmac string, accountId string, toAccountId string) {
@@ -122,6 +130,9 @@ func DeleteContainer(containerNameHmac string) {
         db.Where("container_id = ?", container.ID).Delete(&ContainerRecord{})
         db.Where("container_id = ?", container.ID).Delete(&ContainerSessionKeyShare{})
         db.Delete(&container)
+	log.WithFields(log.Fields{
+    		"containerNameHmac": containerNameHmac,
+  	}).Info("Container deleted")
 }
 
 func CreateNotification(fromAccountId string, toAccountId string, headersCiphertext string, payloadCiphertext string) uint {

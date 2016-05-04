@@ -1,7 +1,7 @@
-# End-to-End Encryption (E2EE) server
+# End-to-End Encryption (E2EE) storage server
 [![Build Status](https://travis-ci.org/xlab-si/e2ee-server.svg?branch=master)](https://travis-ci.org/xlab-si/e2ee-server)
 
-This is a server for storage of encrypted files. It provides REST API for user accounts, data storage, and sharing information between users. The client is available at https://github.com/xlab-si/e2ee-client.
+This is a server for storage of files which are encrypted by [E2EE client](https://github.com/xlab-si/e2ee-client). It provides REST API for user accounts, data storage, and sharing information between users.
 
 *NOTE*: E2EE server is a work in progress. There are issues to be fixed, for example database scheme.
 

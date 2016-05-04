@@ -1,16 +1,5 @@
 package db
 
-import (
-	//"github.com/jinzhu/gorm"
-)
-
-type Accounts []Account
-
-type UserCredentials struct {
-    Username string `json:"username"`
-    Password string `json:"password"`
-}
-
 type Account struct {
 	ContainerNameHmacKeyCiphertext        string       `json:"containerNameHmacKeyCiphertext" sql:"type:text"`
 	HmacKeyCiphertext      string    `json:"hmacKeyCiphertext" sql:"type:text"`
