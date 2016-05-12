@@ -3,13 +3,8 @@ package controllers
 import (
 	"github.com/xlab-si/e2ee-server/core/db"
 	"encoding/json"
-	//"io"
-	//"io/ioutil"
 	"net/http"
-
-	//"github.com/gorilla/mux"
-	//"github.com/jeffail/gabs"
-	//"log"
+	log "github.com/Sirupsen/logrus"
 )
 
 type NotificationsPacket struct {
@@ -28,17 +23,21 @@ func NotificationsGet(w http.ResponseWriter, r *http.Request, next http.HandlerF
 
 	messages := db.GetNotifications(accountId)
 	rmessages := []Notification{}
-	for _, me := range messages {
-		account := db.FindAccount(me.FromAccountId) // me.FromAccountId is 0, which it should not be
+	for _, msg := range messages {
+		/*log.WithFields(log.Fields{
+                        "accountId": accountId,
+                }).Info(msg)*/
+
+		account := db.FindAccount(msg.FromAccountId) // msg.FromAccountId is 0, which it should not be
 		username := account.Username
 		var rm = Notification {
 			FromUsername: username,
-			HeadersCiphertext: me.HeadersCiphertext,	
-			PayloadCiphertext: me.PayloadCiphertext,	
+			HeadersCiphertext: msg.HeadersCiphertext,	
+			PayloadCiphertext: msg.PayloadCiphertext,	
+			CreatedAt: msg.CreatedAt,
 		}
                 rmessages = append(rmessages, rm)
         }
-
 
 	var m = NotificationsPacket{
 	    Success: true,

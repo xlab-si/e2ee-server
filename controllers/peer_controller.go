@@ -7,10 +7,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"strings"
-
-	//"github.com/gorilla/mux"
-	"log"
-	//"github.com/jeffail/gabs"
+	"time"
 )
 
 type Peer struct {
@@ -30,6 +27,7 @@ type Notification struct {
     ToAccountId string `json:"toAccountId"`
     HeadersCiphertext string `json:"headersCiphertext"`
     PayloadCiphertext string `json:"payloadCiphertext"`
+    CreatedAt time.Time `json:"createdAt"`
 }
 
 type NotificationResponse struct {
@@ -41,12 +39,9 @@ type NotificationResponse struct {
 func PeerGet(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
         p := strings.SplitN(r.URL.RequestURI()[1:], "/", 3)
         peerName := p[1]
-	log.Println(peerName)
 	peerName = strings.Replace(peerName, "%20", " ", -1)
 	peerName = strings.TrimSpace(peerName)
 	account := db.FindAccountByName(peerName)
-	log.Println(peerName)
-	log.Println("-----")
 	success := false 
 	if account.AccountId != "" {
 	    success = true
@@ -58,7 +53,6 @@ func PeerGet(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	    PubKey: account.PubKey,	
 	    SignKeyPub: account.SignKeyPub,
 	}
-	log.Println(peer)
 	var m = PeerMessage{
 	    Success: success,
 	    Peer: peer,
@@ -75,7 +69,6 @@ func PeerNotify(w http.ResponseWriter, r *http.Request, next http.HandlerFunc) {
 	accountId, _ := GetAccountInfo(r)
 
         body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1048576))
-        log.Println(err)
 	var chunk Notification
 
 	if err != nil {
