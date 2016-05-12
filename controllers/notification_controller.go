@@ -4,7 +4,7 @@ import (
 	"github.com/xlab-si/e2ee-server/core/db"
 	"encoding/json"
 	"net/http"
-	log "github.com/Sirupsen/logrus"
+	//log "github.com/Sirupsen/logrus"
 )
 
 type NotificationsPacket struct {
