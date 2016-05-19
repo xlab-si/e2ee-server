@@ -6,6 +6,7 @@ import (
 
 func InitRoutes(authenticationRequired bool) *mux.Router {
 	router := mux.NewRouter()
+	router = SetHelloRoutes(router)
 	router = SetVersionCheckRoute(router, authenticationRequired)
 	router = SetAccountRoutes(router, authenticationRequired)
 	router = SetContainerRoutes(router, authenticationRequired)
