@@ -8,6 +8,7 @@ import (
 	"net/http"
 	"strings"
 	log "github.com/Sirupsen/logrus"
+	"fmt"
 
 	//"github.com/gorilla/mux"
 	//"log"
@@ -181,6 +182,9 @@ func ContainerRecordCreate(w http.ResponseWriter, r *http.Request, next http.Han
 			panic(err)
 		}
 	} else {
+		// disable versions:
+		db.DeleteContainerRecords(container.ID)
+
 		db.CreateContainerRecord(container.ID, accountId, chunk.PayloadCiphertext)
 		var m = ContainerResponseMessage{
 	    		Success: true,

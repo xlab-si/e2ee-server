@@ -135,6 +135,11 @@ func DeleteContainer(containerNameHmac string) {
   	}).Info("Container deleted")
 }
 
+func DeleteContainerRecords(containerId uint) {
+        // these is soft delete, use Unscoped to delete records permanentely
+        db.Where("container_id = ?", containerId).Delete(&ContainerRecord{})
+}
+
 func CreateNotification(fromAccountId string, toAccountId string, headersCiphertext string, payloadCiphertext string) uint {
         m := Message {
             FromAccountId: fromAccountId,
